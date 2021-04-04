@@ -20,5 +20,5 @@
 ![Component diagram](docs/components.png)
 ### Распределение компонентов между участниками команды (тут я не знаю, что писать)
 ### Диаграмма классов для компоненты Model:
-![Classtes diagram](classes_model.png)
+![Classes diagram](docs/classes_model.png)
 
