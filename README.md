@@ -2,7 +2,7 @@
 Консольная roguelike-игра.
 
 # Авторы
-* Екатерина Леденева ([@ekiuled](https://github.com/ekiuled))
+* Леденева Екатерина ([@ekiuled](https://github.com/ekiuled))
 * Елисеев Егор ([@EliseevEgor](https://github.com/EliseevEgor))
 
 # Документация
