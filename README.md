@@ -1,4 +1,4 @@
-# rougelike
+# roguelike
 Консольная roguelike-игра.
 
 # Авторы
