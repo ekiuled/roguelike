@@ -11,7 +11,6 @@
 
 ### Случаи использования (Use Case диаграммы)
 ![Player-Client](docs/use_case1.png)
-![Client-Server](docs/use_case2.png)
 ### Ограничения
 - Клиент-серверная архитектура
 - Возможность запустить приложение на Linux, Windows и MacOS
@@ -28,6 +27,9 @@
     - Controller
     - Entities
 
-### Диаграмма классов для компоненты Model:
-![Classes diagram](docs/classes_model.png)
+### Диаграмма классов для компоненты Model
+![Classes diagram: model](docs/classes_model.png)
+
+### Диаграмма классов для Controller и ModAI
+![Classes diagram: controller](docs/classes_controller.png)
 
