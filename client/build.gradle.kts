@@ -26,5 +26,5 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("roguelike.App")
+    mainClass.set("roguelike.Client")
 }

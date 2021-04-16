@@ -6,9 +6,9 @@ package roguelike;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class AppTest {
+public class ServerTest {
     @Test public void testAppHasAGreeting() {
-        App classUnderTest = new App();
+        Server classUnderTest = new Server();
         assertNotNull("app should have a greeting", classUnderTest.getGreeting());
     }
 }
