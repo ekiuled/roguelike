@@ -1,2 +1,2 @@
-# rougelike
-Console rougelike game
+# roguelike
+Консольная roguelike-игра.
