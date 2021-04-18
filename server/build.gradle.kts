@@ -17,3 +17,7 @@ dependencies {
 application {
     mainClass.set("roguelike.Server")
 }
+
+tasks.compileJava {
+    options.release.set(15)
+}
