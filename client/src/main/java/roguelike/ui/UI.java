@@ -45,9 +45,9 @@ public class UI extends JFrame {
         int x0 = Math.max(0, center.getX() - width / 2);
         int y0 = Math.max(0, center.getY() - height / 2);
 
-        for (int x = x0; x < width; x++)
-            for (int y = y0; y < height; y++)
-                terminal.write(map[x][y], x, y);
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                terminal.write(map[x0 + x][y0 + y], x, y);
 
         terminal.repaint();
     }
