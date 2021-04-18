@@ -4,6 +4,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
+import roguelike.model.Model;
 
 import java.nio.charset.StandardCharsets;
 
@@ -11,8 +12,11 @@ public class Controller {
     private final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
     private final static String VIEW_QUEUE_NAME = "roguelike.view";
     private final Channel viewChannel;
+    private final Model model;
 
-    public Controller() throws Exception {
+    public Controller(Model model) throws Exception {
+        this.model = model;
+
         String host = "localhost";
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);

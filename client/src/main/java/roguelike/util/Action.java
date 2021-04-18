@@ -1,4 +1,4 @@
-package roguelike.model.util;
+package roguelike.util;
 
 public enum Action {
     MOVE_UP,

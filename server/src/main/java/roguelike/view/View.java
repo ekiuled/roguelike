@@ -2,16 +2,19 @@ package roguelike.view;
 
 import roguelike.model.Level;
 import roguelike.model.LevelMap;
-import roguelike.model.Mob;
 import roguelike.model.util.Cell;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 public class View {
-    private Map<UUID, Character[][]> playerView;
+    private static final Queue<LevelView> queue = new ArrayDeque<>();
 
-    public void makeView(Mob player, Level newLevel) {
+    public static LevelView getLevelView() {
+        return queue.remove();
+    }
+
+    public static void addView(Level newLevel) {
         LevelMap currentMap = newLevel.getMap();
         Cell[][] currentCells = currentMap.getCells();
         int currentWight = currentMap.getWidth();
@@ -27,10 +30,26 @@ public class View {
                 }
             }
         }
-        playerView.put(player.getId(), currentView);
+        queue.add(new LevelView(newLevel.getNumber(), currentView));
     }
 
-    public void sendView() {
-        //TODO
+    public static class LevelView {
+        private final int number;
+        private final Character[][] view;
+
+        public LevelView(int num, Character[][] view) {
+            number = num;
+            this.view = view;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        public Character[][] getView() {
+            return view;
+        }
+
     }
+
 }

@@ -1,7 +1,7 @@
 package roguelike.model;
 
-import roguelike.model.util.Action;
 import roguelike.model.util.Direction;
+import roguelike.util.Action;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +26,10 @@ public class Level {
         generateItems(number);
     }
 
+    public int getNumber() {
+        return number;
+    }
+
     private void generateItems(int number) {
         items = new HashMap<>();
     }
@@ -38,8 +42,8 @@ public class Level {
         players.put(player.getId(), player);
     }
 
-    public void removePlayer(Player player) {
-        players.remove(player.getId());
+    public Player removePlayer(UUID playerId) {
+        return players.remove(playerId);
     }
 
     public void addPMob(Mob monster) {
@@ -50,7 +54,8 @@ public class Level {
         items.put(item.getPosition(), item);
     }
 
-    public void updateLevel(UUID id, Action action) {
+
+    public boolean updateLevel(UUID id, Action action) {
         Player currentPlayer = players.get(id);
         switch (action) {
             case MOVE_UP -> currentPlayer.move(Direction.UP);
@@ -58,7 +63,7 @@ public class Level {
             case MOVE_LEFT -> currentPlayer.move(Direction.LEFT);
             case MOVE_RIGHT -> currentPlayer.move(Direction.RIGHT);
         }
-        //TODO: send to View
+        return false;
     }
 
     public LevelMap getMap() {
