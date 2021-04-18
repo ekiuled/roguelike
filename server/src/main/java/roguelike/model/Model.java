@@ -1,6 +1,6 @@
 package roguelike.model;
 
-import roguelike.Action;
+import roguelike.util.Action;
 import roguelike.view.View;
 
 import java.util.*;
@@ -35,5 +35,6 @@ public class Model {
         }
 
     }
+
 
 }

@@ -1,7 +1,7 @@
 package roguelike.model;
 
 import roguelike.model.util.Direction;
-import roguelike.Action;
+import roguelike.util.Action;
 
 import java.util.HashMap;
 import java.util.Map;

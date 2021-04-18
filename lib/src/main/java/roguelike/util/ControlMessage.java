@@ -1,4 +1,4 @@
-package roguelike;
+package roguelike.util;
 
 public class ControlMessage {
 }
