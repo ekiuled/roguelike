@@ -62,6 +62,7 @@ public class Level {
             case MOVE_DOWN -> currentPlayer.move(Direction.DOWN);
             case MOVE_LEFT -> currentPlayer.move(Direction.LEFT);
             case MOVE_RIGHT -> currentPlayer.move(Direction.RIGHT);
+            case EXIT -> removePlayer(id);
         }
         return false;
     }

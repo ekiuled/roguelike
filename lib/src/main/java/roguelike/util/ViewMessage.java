@@ -1,6 +1,11 @@
 package roguelike.util;
 
 public class ViewMessage {
-    private int levelNumber;
-    private Character[][] map;
+    public int levelNumber;
+    public Character[][] map;
+
+    public ViewMessage(int number, Character[][] view) {
+        levelNumber = number;
+        map = view;
+    }
 }
