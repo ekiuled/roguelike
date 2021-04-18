@@ -11,3 +11,4 @@ rootProject.name = "roguelike"
 include("client")
 include("server")
 include("lib")
+include("singleplayer")

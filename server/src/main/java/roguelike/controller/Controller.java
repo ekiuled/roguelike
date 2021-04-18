@@ -8,6 +8,7 @@ import roguelike.util.Action;
 import roguelike.util.ControlMessage;
 import roguelike.util.ViewMessage;
 import roguelike.view.View;
+import sun.misc.Signal;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -50,6 +51,8 @@ public class Controller {
 
         controllerChannel.basicConsume(CONTROLLER_QUEUE_NAME, true, new MessageHandler(), consumerTag -> {
         });
+
+        Signal.handle(new Signal("INT"), signal -> System.out.println("Interrupted by Ctrl+C"));
     }
 
     private class MessageHandler implements DeliverCallback {
@@ -57,7 +60,6 @@ public class Controller {
         public void handle(String consumerTag, Delivery delivery) throws IOException {
             String jsonString = new String(delivery.getBody(), StandardCharsets.UTF_8);
             ControlMessage message = new Gson().fromJson(jsonString, ControlMessage.class);
-            System.out.println(message.username + ": " + message.action);
 
             if (message.action == Action.REG) {
                 Player player = new Player(message.username);
