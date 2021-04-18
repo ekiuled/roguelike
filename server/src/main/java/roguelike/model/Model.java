@@ -1,5 +1,6 @@
 package roguelike.model;
 
+import roguelike.model.util.TypeOfMovement;
 import roguelike.util.Action;
 import roguelike.view.View;
 
@@ -28,13 +29,15 @@ public class Model {
     public void update(UUID id, Action action) {
         int index = entityLevel.get(id);
         Level currentLevel = levels.get(index);
-        boolean goToNextLevel = currentLevel.updateLevel(id, action);
-        View.addView(currentLevel);
-        if (goToNextLevel) {
-            Player currentPlayer = levels.get(index).removePlayer(id);
-            currentLevel = getLevel(index + 1);
-            addNewPlayer(currentPlayer, index + 1);
-            View.addView(currentLevel);
+        TypeOfMovement type = currentLevel.updateLevel(id, action);
+        switch (type) {
+            case DONE -> View.addView(currentLevel);
+            case NEXT_LEVEL -> {
+                Player currentPlayer = levels.get(index).removePlayer(id);
+                currentLevel = getLevel(index + 1);
+                addNewPlayer(currentPlayer, index + 1);
+                View.addView(currentLevel);
+            }
         }
     }
 }

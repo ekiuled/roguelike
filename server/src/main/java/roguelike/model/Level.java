@@ -1,6 +1,7 @@
 package roguelike.model;
 
 import roguelike.model.util.Direction;
+import roguelike.model.util.TypeOfMovement;
 import roguelike.util.Action;
 import roguelike.util.Position;
 
@@ -61,16 +62,36 @@ public class Level {
     }
 
 
-    public boolean updateLevel(UUID id, Action action) {
+    public TypeOfMovement updateLevel(UUID id, Action action) {
+        TypeOfMovement type = TypeOfMovement.NONE;
         Player currentPlayer = players.get(id);
         switch (action) {
-            case MOVE_UP -> currentPlayer.move(Direction.UP);
-            case MOVE_DOWN -> currentPlayer.move(Direction.DOWN);
-            case MOVE_LEFT -> currentPlayer.move(Direction.LEFT);
-            case MOVE_RIGHT -> currentPlayer.move(Direction.RIGHT);
-            case EXIT -> removePlayer(id);
+            case MOVE_UP -> {
+                if (currentPlayer.move(Direction.UP)) {
+                    type = TypeOfMovement.DONE;
+                }
+            }
+            case MOVE_DOWN -> {
+                if (currentPlayer.move(Direction.DOWN)) {
+                    type = TypeOfMovement.DONE;
+                }
+            }
+            case MOVE_LEFT -> {
+                if (currentPlayer.move(Direction.LEFT)) {
+                    type = TypeOfMovement.DONE;
+                }
+            }
+            case MOVE_RIGHT -> {
+                if (currentPlayer.move(Direction.RIGHT)) {
+                    type = TypeOfMovement.DONE;
+                }
+            }
+            case EXIT -> {
+                removePlayer(id);
+                type = TypeOfMovement.EXIT;
+            }
         }
-        return false;
+        return type;
     }
 
     public LevelMap getMap() {

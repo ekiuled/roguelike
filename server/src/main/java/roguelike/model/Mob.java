@@ -29,28 +29,34 @@ public class Mob extends Entity {
         return health;
     }
 
-    private void tryMove(char dir, int newCoord) {
+    private boolean tryMove(char dir, int newCoord) {
         if (dir == 'y') {
             Cell cell = map.getCell(getPosition().getX(), newCoord);
             if (cell != null && cell.getKind().equals(CellKind.GROUND)) {
                 getPosition().setY(newCoord);
+                return true;
             }
         }
         if (dir == 'x') {
             Cell cell = map.getCell(newCoord, getPosition().getY());
-            if (cell != null && cell.getKind().equals(CellKind.GROUND))
+            if (cell != null && cell.getKind().equals(CellKind.GROUND)) {
                 getPosition().setX(newCoord);
+                return true;
+            }
         }
+        return false;
     }
 
-    public void move(Direction direction) {
+    public boolean move(Direction direction) {
+        boolean wasMoved = false;
         Position currPosition = this.getPosition();
         switch (direction) {
-            case UP -> tryMove('y', currPosition.getY() - 1);
-            case DOWN -> tryMove('y', currPosition.getY() + 1);
-            case LEFT -> tryMove('x', currPosition.getX() - 1);
-            case RIGHT -> tryMove('x', currPosition.getX() + 1);
+            case UP -> wasMoved = tryMove('y', currPosition.getY() - 1);
+            case DOWN -> wasMoved = tryMove('y', currPosition.getY() + 1);
+            case LEFT -> wasMoved = tryMove('x', currPosition.getX() - 1);
+            case RIGHT -> wasMoved = tryMove('x', currPosition.getX() + 1);
         }
+        return wasMoved;
     }
 
     boolean isAlive() {
