@@ -6,7 +6,8 @@ public class Cell extends Entity {
     private CellKind kind = CellKind.WALL;
 
     public Cell(Position pos, CellKind cellKind) {
-        super(pos);
+        super();
+        setPosition(pos);
         kind = cellKind;
     }
 

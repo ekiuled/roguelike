@@ -10,9 +10,12 @@ public class Mob extends Entity {
     private LevelMap map;
 
 
-    public Mob(Position pos, LevelMap map) {
-        super(pos);
+    public Mob() {
+        super();
         health = INITIAL_HEALTH;
+    }
+
+    public void setMap(LevelMap map) {
         this.map = map;
     }
 

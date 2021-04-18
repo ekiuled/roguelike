@@ -6,9 +6,14 @@ public class Entity {
     private Position position;
     private UUID id;
 
-    public Entity(Position pos) {
-        position = pos;
+
+    public Entity() {
         id = UUID.randomUUID();
+    }
+
+    public Entity setPosition(Position position) {
+        this.position = position;
+        return this;
     }
 
     public Position getPosition() {

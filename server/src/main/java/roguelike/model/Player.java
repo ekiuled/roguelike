@@ -4,8 +4,8 @@ public class Player extends Mob {
     private int score;
     private String name;
 
-    public Player(Position pos, LevelMap map, String name) {
-        super(pos, map);
+    public Player(String name) {
+        super();
         this.name = name;
 
     }
