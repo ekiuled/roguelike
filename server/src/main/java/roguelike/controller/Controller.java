@@ -1,18 +1,23 @@
 package roguelike.controller;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.DeliverCallback;
+import com.google.gson.Gson;
+import com.rabbitmq.client.*;
 import roguelike.model.Model;
+import roguelike.model.Player;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Controller {
     private final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
     private final static String VIEW_QUEUE_NAME = "roguelike.view";
     private final Channel viewChannel;
+
     private final Model model;
+    private final Map<String, UUID> players = new HashMap<>();
 
     public Controller(Model model) throws Exception {
         this.model = model;
@@ -39,16 +44,22 @@ public class Controller {
                 false,
                 null);
 
-        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+        controllerChannel.basicConsume(CONTROLLER_QUEUE_NAME, true, new MessageHandler(), consumerTag -> {
+        });
+    }
+
+    private class MessageHandler implements DeliverCallback {
+        @Override
+        public void handle(String consumerTag, Delivery delivery) throws IOException {
             String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+//            Map<String, Object> message = new Gson().fromJson(jsonString);
+
             System.out.println(" [x] Received '" + message + "'");
             viewChannel.basicPublish("",
                     VIEW_QUEUE_NAME,
                     null,
                     message.getBytes()); // View.get(...)
-        };
+        }
 
-        controllerChannel.basicConsume(CONTROLLER_QUEUE_NAME, true, deliverCallback, consumerTag -> {
-        });
     }
 }

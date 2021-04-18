@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class ServerConnection {
-    private final String username;
-
     private final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
     private final static String VIEW_QUEUE_NAME = "roguelike.view";
     private final Channel controllerChannel;
@@ -19,8 +17,6 @@ public class ServerConnection {
 
 
     public ServerConnection(String username) throws Exception {
-        this.username = username;
-
         String host = "localhost";
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
@@ -42,6 +38,8 @@ public class ServerConnection {
                 false,
                 false,
                 null);
+
+        sendMessage("REG");
     }
 
     public void sendMessage(String message) throws IOException {
@@ -49,7 +47,7 @@ public class ServerConnection {
                 "",
                 CONTROLLER_QUEUE_NAME,
                 null,
-                (username + ": " + message).getBytes());
+                message.getBytes());
     }
 
     public void setViewListener(UI ui) throws IOException {

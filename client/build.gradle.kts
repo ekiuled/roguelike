@@ -15,6 +15,8 @@ dependencies {
     implementation("com.rabbitmq:amqp-client:5.+")
 
     implementation("com.github.trystan:AsciiPanel:master-SNAPSHOT")
+
+    implementation(project(":lib"))
 }
 
 application {
