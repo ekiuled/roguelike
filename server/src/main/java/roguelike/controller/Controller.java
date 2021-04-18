@@ -70,7 +70,7 @@ public class Controller {
                             "",
                             VIEW_QUEUE_NAME,
                             null,
-                            new Gson().toJson(levelView).getBytes());
+                            new Gson().toJson(levelView.buildViewMessage()).getBytes());
                 }
             }
         }
