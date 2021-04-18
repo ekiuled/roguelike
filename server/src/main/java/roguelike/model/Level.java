@@ -2,6 +2,7 @@ package roguelike.model;
 
 import roguelike.model.util.Direction;
 import roguelike.util.Action;
+import roguelike.util.Position;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,11 +14,15 @@ public class Level {
     private int number;
     private LevelMap map;
     private Map<UUID, Mob> mobs;
-    private Map<Entity.Position, ItemEntity> items;
+    private Map<Position, ItemEntity> items;
 
     public Level(int num) {
         number = num;
         generateLevel();
+    }
+
+    public Map<UUID, Player> getPlayers() {
+        return players;
     }
 
     private void generateLevel() {

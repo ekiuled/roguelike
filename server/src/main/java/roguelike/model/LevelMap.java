@@ -3,13 +3,14 @@ package roguelike.model;
 import roguelike.model.util.Cell;
 import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
+import roguelike.util.Position;
 
 public class LevelMap {
     private final int width;
     private final int height;
     private final Cell[][] cells;
-    private Entity.Position startCell;
-    private Entity.Position endCell;
+    private Position startCell;
+    private Position endCell;
 
     public LevelMap(int w, int h) {
         width = w;
@@ -34,11 +35,11 @@ public class LevelMap {
         return cells;
     }
 
-    public Entity.Position getStartCell() {
+    public Position getStartCell() {
         return startCell;
     }
 
-    public Entity.Position getEndCell() {
+    public Position getEndCell() {
         return endCell;
     }
 
@@ -49,7 +50,7 @@ public class LevelMap {
     private void generateMap() {
         int currentX = width / 2;
         int currentY = height / 2;
-        startCell = new Entity.Position(currentX, currentY);
+        startCell = new Position(currentX, currentY);
         cells[currentX][currentY].setKind(CellKind.START);
 
         int groundCount = (int) (0.7 * width * height);
@@ -87,7 +88,7 @@ public class LevelMap {
             }
         }
         cells[currentX][currentY].setKind(CellKind.END);
-        endCell = new Entity.Position(currentX, currentY);
+        endCell = new Position(currentX, currentY);
     }
 
     public Cell getCell(int i, int j) {

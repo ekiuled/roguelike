@@ -3,6 +3,7 @@ package roguelike.model;
 import roguelike.model.util.Cell;
 import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
+import roguelike.util.Position;
 
 public class Mob extends Entity {
     private final int INITIAL_HEALTH = 100;
@@ -43,7 +44,7 @@ public class Mob extends Entity {
     }
 
     public void move(Direction direction) {
-        Entity.Position currPosition = this.getPosition();
+        Position currPosition = this.getPosition();
         switch (direction) {
             case UP -> tryMove('y', currPosition.getY() + 1);
             case DOWN -> tryMove('y', currPosition.getY() - 1);
