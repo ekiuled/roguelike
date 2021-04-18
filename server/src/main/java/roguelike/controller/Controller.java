@@ -6,6 +6,7 @@ import roguelike.model.Model;
 import roguelike.model.Player;
 import roguelike.util.Action;
 import roguelike.util.ControlMessage;
+import roguelike.util.ViewMessage;
 import roguelike.view.View;
 
 import java.io.IOException;
@@ -65,12 +66,12 @@ public class Controller {
             } else if (players.containsKey(consumerTag)) {
                 model.update(players.get(consumerTag), message.action);
                 while (!View.isEmpty()) {
-                    View.LevelView levelView = View.getLevelView();
+                    ViewMessage levelView = View.getLevelView();
                     viewChannel.basicPublish(
                             "",
                             VIEW_QUEUE_NAME,
                             null,
-                            new Gson().toJson(levelView.buildViewMessage()).getBytes());
+                            new Gson().toJson(levelView).getBytes());
                 }
             }
         }

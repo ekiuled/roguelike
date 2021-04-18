@@ -10,13 +10,13 @@ import roguelike.util.ViewMessage;
 import java.util.*;
 
 public class View {
-    private static final Queue<LevelView> queue = new ArrayDeque<>();
+    private static final Queue<ViewMessage> queue = new ArrayDeque<>();
 
     public static boolean isEmpty() {
         return queue.isEmpty();
     }
 
-    public static LevelView getLevelView() {
+    public static ViewMessage getLevelView() {
         return queue.remove();
     }
 
@@ -43,32 +43,6 @@ public class View {
             currentView[player.getPosition().getX()][player.getPosition().getY()] = '@';
         }
 
-        queue.add(new LevelView(newLevel.getNumber(), currentView, map));
+        queue.add(new ViewMessage(newLevel.getNumber(), currentView, map));
     }
-
-    public static class LevelView {
-        private final int number;
-        private final Character[][] view;
-        private final Map<UUID, Position> players;
-
-        public LevelView(int num, Character[][] view, Map<UUID, Position> pls) {
-            number = num;
-            this.view = view;
-            players = pls;
-        }
-
-        public int getNumber() {
-            return number;
-        }
-
-        public Character[][] getView() {
-            return view;
-        }
-
-        public ViewMessage buildViewMessage() {
-            return new ViewMessage(number, view, players);
-        }
-
-    }
-
 }
