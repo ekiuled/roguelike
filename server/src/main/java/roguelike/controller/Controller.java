@@ -65,14 +65,14 @@ public class Controller {
                 model.addNewPlayer(player, 0);
             } else if (players.containsKey(consumerTag)) {
                 model.update(players.get(consumerTag), message.action);
-                while (!View.isEmpty()) {
-                    ViewMessage levelView = View.getLevelView();
-                    viewChannel.basicPublish(
-                            "",
-                            VIEW_QUEUE_NAME,
-                            null,
-                            new Gson().toJson(levelView).getBytes());
-                }
+            }
+            while (!View.isEmpty()) {
+                ViewMessage levelView = View.getLevelView();
+                viewChannel.basicPublish(
+                        "",
+                        VIEW_QUEUE_NAME,
+                        null,
+                        new Gson().toJson(levelView).getBytes());
             }
         }
     }

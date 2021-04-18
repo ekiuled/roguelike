@@ -3,6 +3,7 @@ package roguelike.ui;
 import asciiPanel.AsciiPanel;
 import roguelike.input.InputHandler;
 import roguelike.util.Action;
+import roguelike.util.Position;
 import roguelike.util.ServerConnection;
 
 import javax.swing.*;
@@ -12,15 +13,14 @@ import java.io.IOException;
 
 public class UI extends JFrame {
     private final AsciiPanel terminal;
+    private final int width = 80;
+    private final int height = 60;
 
     public UI(ServerConnection serverConnection) throws IOException {
-        final int width = 800;
-        final int height = 600;
-
         add(terminal = new AsciiPanel(width, height));
         addKeyListener(new InputHandler(serverConnection));
 
-        setSize(width, height);
+        setSize(width * 9, height * 16);
         setVisible(true);
         setResizable(false);
 
@@ -39,11 +39,16 @@ public class UI extends JFrame {
         serverConnection.setViewListener(this);
     }
 
-    public void repaint(Character[][] map) {
+    public void repaint(Character[][] map, Position center) {
         terminal.clear();
-        for (int x = 0; x < map.length; x++)
-            for (int y = 0; y < map[x].length; y++)
+
+        int x0 = Math.max(0, center.getX() - width / 2);
+        int y0 = Math.max(0, center.getY() - height / 2);
+
+        for (int x = x0; x < width; x++)
+            for (int y = y0; y < height; y++)
                 terminal.write(map[x][y], x, y);
+
         terminal.repaint();
     }
 

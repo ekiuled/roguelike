@@ -39,9 +39,9 @@ public class View {
             }
         }
 
-        Map<UUID, Position> map = new HashMap<>();
+        Map<String, Position> map = new HashMap<>();
         for (var player : players) {
-            map.put(player.getId(), player.getPosition());
+            map.put(player.getName(), player.getPosition());
             currentView[player.getPosition().getX()][player.getPosition().getY()] = '@';
         }
 
