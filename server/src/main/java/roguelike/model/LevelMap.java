@@ -5,9 +5,9 @@ import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
 
 public class LevelMap {
-    private int width;
-    private int height;
-    private Cell[][] cells;
+    private final int width;
+    private final int height;
+    private final Cell[][] cells;
     private Entity.Position startCell;
     private Entity.Position endCell;
 
@@ -57,14 +57,14 @@ public class LevelMap {
             Direction dir = Direction.getRandomDirection();
             switch (dir) {
                 case UP -> {
-                    if (canMove('y', currentX + 1)) {
+                    if (canMove('y', currentY + 1)) {
                         currentY++;
                         groundCount--;
                         cells[currentX][currentY].setKind(CellKind.GROUND);
                     }
                 }
                 case DOWN -> {
-                    if (canMove('y', currentX - 1)) {
+                    if (canMove('y', currentY - 1)) {
                         currentY--;
                         groundCount--;
                         cells[currentX][currentY].setKind(CellKind.GROUND);
