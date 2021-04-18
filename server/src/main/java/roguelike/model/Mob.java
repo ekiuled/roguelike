@@ -46,8 +46,8 @@ public class Mob extends Entity {
     public void move(Direction direction) {
         Position currPosition = this.getPosition();
         switch (direction) {
-            case UP -> tryMove('y', currPosition.getY() + 1);
-            case DOWN -> tryMove('y', currPosition.getY() - 1);
+            case UP -> tryMove('y', currPosition.getY() - 1);
+            case DOWN -> tryMove('y', currPosition.getY() + 1);
             case LEFT -> tryMove('x', currPosition.getX() - 1);
             case RIGHT -> tryMove('x', currPosition.getX() + 1);
         }
