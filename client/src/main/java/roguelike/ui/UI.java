@@ -39,9 +39,11 @@ public class UI extends JFrame {
         serverConnection.setViewListener(this);
     }
 
-    public void repaint(String message) {
+    public void repaint(Character[][] map) {
         terminal.clear();
-        terminal.write(message, 0, 0);
+        for (int x = 0; x < map.length; x++)
+            for (int y = 0; y < map[x].length; y++)
+                terminal.write(map[x][y], x, y);
         terminal.repaint();
     }
 

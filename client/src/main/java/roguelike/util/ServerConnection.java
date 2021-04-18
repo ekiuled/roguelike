@@ -59,8 +59,9 @@ public class ServerConnection {
 
     public void setViewListener(UI ui) throws IOException {
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-            String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-            ui.repaint(message);
+            String jsonString = new String(delivery.getBody(), StandardCharsets.UTF_8);
+            ViewMessage message = new Gson().fromJson(jsonString, ViewMessage.class);
+            ui.repaint(message.map);
         };
 
         viewChannel.basicConsume(VIEW_QUEUE_NAME, true, deliverCallback, consumerTag -> {

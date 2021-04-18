@@ -11,6 +11,10 @@ import java.util.Queue;
 public class View {
     private static final Queue<LevelView> queue = new ArrayDeque<>();
 
+    public static boolean isEmpty() {
+        return queue.isEmpty();
+    }
+
     public static LevelView getLevelView() {
         return queue.remove();
     }
