@@ -22,6 +22,7 @@ public class Model {
         newPlayer.setPosition(map.getStartCell());
         newPlayer.setMap(map);
         getLevel(numberLevel).addPlayer(newPlayer);
+        View.addView(getLevel(numberLevel));
     }
 
     public void update(UUID id, Action action) {

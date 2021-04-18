@@ -27,6 +27,7 @@ public class View {
         int currentWight = currentMap.getWidth();
         int currentHeight = currentMap.getHeight();
         Character[][] currentView = new Character[currentWight][currentHeight];
+
         for (int i = 0; i < currentWight; i++) {
             for (int j = 0; j < currentHeight; j++) {
                 switch (currentCells[i][j].getKind()) {
@@ -37,6 +38,7 @@ public class View {
                 }
             }
         }
+
         Map<UUID, Position> map = new HashMap<>();
         for (var player : players) {
             map.put(player.getId(), player.getPosition());
