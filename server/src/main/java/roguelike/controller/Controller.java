@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.rabbitmq.client.*;
 import roguelike.model.Model;
 import roguelike.model.Player;
+import roguelike.util.Action;
+import roguelike.util.ControlMessage;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -51,14 +53,22 @@ public class Controller {
     private class MessageHandler implements DeliverCallback {
         @Override
         public void handle(String consumerTag, Delivery delivery) throws IOException {
-            String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-//            Map<String, Object> message = new Gson().fromJson(jsonString);
+            String jsonString = new String(delivery.getBody(), StandardCharsets.UTF_8);
+            ControlMessage message = new Gson().fromJson(jsonString, ControlMessage.class);
+            System.out.println(message.username + ": " + message.action);
 
-            System.out.println(" [x] Received '" + message + "'");
+            if (message.action == Action.REG) {
+                Player player = new Player(message.username);
+                players.put(consumerTag, player.getId());
+                model.addNewPlayer(player);
+            } else if (players.containsKey(consumerTag)) {
+                model.update(players.get(consumerTag), message.action);
+            }
+
             viewChannel.basicPublish("",
                     VIEW_QUEUE_NAME,
                     null,
-                    message.getBytes()); // View.get(...)
+                    message.action.toString().getBytes()); // View.get(...)
         }
 
     }

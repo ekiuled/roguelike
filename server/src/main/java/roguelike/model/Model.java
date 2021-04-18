@@ -11,7 +11,7 @@ public class Model {
     private final Map<UUID, Integer> entityLevel = new HashMap<>();
 
     public Level getLevel(int index) {
-        if (levels.size() < index) {
+        if (levels.size() <= index) {
             levels.add(new Level(index));
         }
         return levels.get(index);
