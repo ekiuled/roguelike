@@ -1,14 +1,10 @@
 package roguelike.model.util;
 
-import roguelike.model.Entity;
+public class Cell {
+    private CellKind kind;
 
-public class Cell extends Entity {
-    private CellKind kind = CellKind.WALL;
-
-    public Cell(Position pos, CellKind cellKind) {
-        super();
-        setPosition(pos);
-        kind = cellKind;
+    public Cell() {
+        kind = CellKind.WALL;
     }
 
     public CellKind getKind() {

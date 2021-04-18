@@ -1,7 +1,6 @@
 package roguelike.model;
 
 import roguelike.util.Action;
-import roguelike.util.ViewMessage;
 import roguelike.view.View;
 
 import java.util.*;
@@ -17,12 +16,12 @@ public class Model {
         return levels.get(index);
     }
 
-    public void addNewPlayer(Player newPlayer) {
-        entityLevel.put(newPlayer.getId(), 0);
-        LevelMap map = getLevel(0).getMap();
+    public void addNewPlayer(Player newPlayer, int numberLevel) {
+        entityLevel.put(newPlayer.getId(), numberLevel);
+        LevelMap map = getLevel(numberLevel).getMap();
         newPlayer.setPosition(map.getStartCell());
         newPlayer.setMap(map);
-        getLevel(0).addPlayer(newPlayer);
+        getLevel(numberLevel).addPlayer(newPlayer);
     }
 
     public void update(UUID id, Action action) {
@@ -33,15 +32,8 @@ public class Model {
         if (goToNextLevel) {
             Player currentPlayer = levels.get(index).removePlayer(id);
             currentLevel = getLevel(index + 1);
-            currentLevel.addPlayer(currentPlayer);
-            entityLevel.put(id, index + 1);
+            addNewPlayer(currentPlayer, index + 1);
             View.addView(currentLevel);
         }
-
-    }
-
-    public ViewMessage buildViewMessage() {
-        View.LevelView currentView = View.getLevelView();
-        return new ViewMessage(currentView.getNumber(), currentView.getView());
     }
 }

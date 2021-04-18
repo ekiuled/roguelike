@@ -60,7 +60,7 @@ public class Controller {
             if (message.action == Action.REG) {
                 Player player = new Player(message.username);
                 players.put(consumerTag, player.getId());
-                model.addNewPlayer(player);
+                model.addNewPlayer(player, 0);
             } else if (players.containsKey(consumerTag)) {
                 model.update(players.get(consumerTag), message.action);
             }

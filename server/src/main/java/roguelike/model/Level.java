@@ -21,7 +21,7 @@ public class Level {
     }
 
     private void generateLevel() {
-        map = new LevelMap(number * SCALE, number * SCALE);
+        map = new LevelMap((number + 1) * SCALE, (number + 1) * SCALE);
         generateMobs(number);
         generateItems(number);
     }
@@ -39,6 +39,7 @@ public class Level {
     }
 
     public void addPlayer(Player player) {
+
         players.put(player.getId(), player);
     }
 

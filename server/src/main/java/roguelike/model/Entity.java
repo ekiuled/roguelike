@@ -24,9 +24,14 @@ public class Entity {
         return id;
     }
 
-    public class Position {
+    public static class Position {
         private int x;
         private int y;
+
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
 
         public int getY() {
             return y;

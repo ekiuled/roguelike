@@ -3,6 +3,7 @@ package roguelike.view;
 import roguelike.model.Level;
 import roguelike.model.LevelMap;
 import roguelike.model.util.Cell;
+import roguelike.util.ViewMessage;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -48,6 +49,10 @@ public class View {
 
         public Character[][] getView() {
             return view;
+        }
+
+        public ViewMessage buildViewMessage() {
+            return new ViewMessage(number, view);
         }
 
     }
