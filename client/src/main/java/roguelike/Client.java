@@ -1,6 +1,5 @@
 package roguelike;
 
-import roguelike.input.InputHandler;
 import roguelike.ui.UI;
 import roguelike.util.ServerConnection;
 

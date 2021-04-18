@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Level {
     private final int SCALE = 1000;
     private final Map<UUID, Player> players = new HashMap<>();
-    private int number;
+    private final int number;
     private LevelMap map;
     private Map<UUID, Mob> mobs;
     private Map<Position, ItemEntity> items;

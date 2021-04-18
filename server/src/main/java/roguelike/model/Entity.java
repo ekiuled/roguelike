@@ -6,16 +6,15 @@ import java.util.UUID;
 
 public class Entity {
     private Position position;
-    private UUID id;
+    private final UUID id;
 
 
     public Entity() {
         id = UUID.randomUUID();
     }
 
-    public Entity setPosition(Position position) {
+    public void setPosition(Position position) {
         this.position = position;
-        return this;
     }
 
     public Position getPosition() {
