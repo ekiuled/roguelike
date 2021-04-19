@@ -10,7 +10,7 @@
 - Единый набор возможных действий для каждого игрока.
 
 ### Случаи использования (Use Case диаграммы)
-![Player-Client](docs/use_case1.png)
+![Player-Client](docs/use_case.png)
 ### Ограничения
 - Клиент-серверная архитектура
 - Возможность запустить приложение на Linux, Windows и MacOS
@@ -18,18 +18,17 @@
 ## Диаграмма компонентов
 ![Component diagram](docs/components.png)
 ### Распределение компонентов между участниками команды
-* #### Екатерина
+* **Екатерина**
     - UI
-    - View
-    - Map
-* #### Егор
     - Input
     - Controller
-    - Entities
+* **Егор**
+    - View
+    - Model
 
 ### Диаграмма классов для компоненты Model
 ![Classes diagram: model](docs/classes_model.png)
 
-### Диаграмма классов для Controller и ModAI
+### Диаграмма классов для Controller и связанных классов
 ![Classes diagram: controller](docs/classes_controller.png)
 
