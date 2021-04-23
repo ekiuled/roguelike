@@ -15,3 +15,6 @@ systemctl start rabbitmq.service
 # Использование
 Игра запускается командой `./gradlew singleplayer:run` в корне проекта. Генерируется лабиринт и игрок (`@`), которым можно управлять с помощью <kbd>WASD</kbd>.
 Чтобы выйти из игры, нажмите на <kbd>Esc</kbd> или закройте окно.
+
+# Документация
+См. [Design Document.md](https://github.com/ekiuled/roguelike/blob/main/Design%20Document.md).
