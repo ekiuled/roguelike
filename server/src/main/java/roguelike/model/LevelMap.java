@@ -5,6 +5,9 @@ import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
 import roguelike.util.Position;
 
+/**
+ * class for level map
+ */
 public class LevelMap {
     private final int width;
     private final int height;
@@ -47,6 +50,7 @@ public class LevelMap {
         return coord == 'y' && newCoord < height - 1 && newCoord > 1 || coord == 'x' && newCoord < width - 1 && newCoord > 1;
     }
 
+    // map generation function, uses a random walk with a certain number of moves
     private void generateMap() {
         int currentX = width / 2;
         int currentY = height / 2;

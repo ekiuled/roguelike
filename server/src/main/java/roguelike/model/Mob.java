@@ -5,6 +5,9 @@ import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
 import roguelike.util.Position;
 
+/**
+ * class for any map entity that can move (mobs / players)
+ */
 public class Mob extends Entity {
     private final int INITIAL_HEALTH = 100;
     private int health;

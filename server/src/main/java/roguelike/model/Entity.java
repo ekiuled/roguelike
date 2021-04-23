@@ -4,6 +4,9 @@ import roguelike.util.Position;
 
 import java.util.UUID;
 
+/**
+ * parent class for any object of the level
+ */
 public class Entity {
     private Position position;
     private final UUID id;

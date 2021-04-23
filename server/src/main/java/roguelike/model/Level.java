@@ -9,13 +9,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+
+/**
+ * class that contains all the necessary information for each individual level
+ * Includes:
+ * table of monsters
+ * table of players
+ * table of items
+ * level map
+ */
 public class Level {
     private final int SCALE = 1000;
     private final Map<UUID, Player> players = new HashMap<>();
     private final int number;
     private LevelMap map;
-    private Map<UUID, Mob> mobs;
-    private Map<Position, ItemEntity> items;
+    private final Map<UUID, Mob> mobs = new HashMap<>();
+    private final Map<Position, ItemEntity> items = new HashMap<>();
+    ;
 
     public Level(int num) {
         number = num;
@@ -26,6 +36,8 @@ public class Level {
         return players;
     }
 
+    // creates a random level of a certain size by calling
+    // the constructor for the map
     private void generateLevel() {
         map = new LevelMap((number + 1) * SCALE, (number + 1) * SCALE);
         generateMobs(number);
@@ -37,11 +49,11 @@ public class Level {
     }
 
     private void generateItems(int number) {
-        items = new HashMap<>();
+        //TODO: generate items on map
     }
 
     private void generateMobs(int number) {
-        mobs = new HashMap<>();
+        //TODO: generate mobs on map
     }
 
     public void addPlayer(Player player) {
@@ -62,6 +74,7 @@ public class Level {
     }
 
 
+    // Updates the state of the level depending on the type of action
     public TypeOfMovement updateLevel(UUID id, Action action) {
         TypeOfMovement type = TypeOfMovement.NONE;
         Player currentPlayer = players.get(id);
