@@ -35,8 +35,9 @@ public class Level {
         return players;
     }
 
-    // creates a random level of a certain size by calling
-    // the constructor for the map
+    /**
+     * Creates a random level of a certain size by calling the constructor for the map
+     */
     private void generateLevel() {
         map = new LevelMap((number + 1) * SCALE, (number + 1) * SCALE);
         generateMobs(number);
@@ -72,8 +73,9 @@ public class Level {
         items.put(item.getPosition(), item);
     }
 
-
-    // Updates the state of the level depending on the type of action
+    /**
+     * Updates the state of the level depending on the type of action
+     */
     public TypeOfMovement updateLevel(UUID id, Action action) {
         TypeOfMovement type = TypeOfMovement.NONE;
         Player currentPlayer = players.get(id);
