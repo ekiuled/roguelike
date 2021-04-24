@@ -1,6 +1,7 @@
 package roguelike.model.util;
+
 /**
- * class to describe the kind of the map cells
+ * Class to describe the kind of the map cells
  */
 public class Cell {
     private CellKind kind;

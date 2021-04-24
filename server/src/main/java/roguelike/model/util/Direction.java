@@ -2,6 +2,9 @@ package roguelike.model.util;
 
 import java.util.Random;
 
+/**
+ * Movement directions
+ */
 public enum Direction {
     UP,
     DOWN,

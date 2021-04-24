@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Class for managing interaction with clients
+ */
 public class Controller {
     private final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
     private final static String VIEW_QUEUE_NAME = "roguelike.view";
@@ -55,7 +58,13 @@ public class Controller {
         Signal.handle(new Signal("INT"), signal -> System.out.println("Interrupted by Ctrl+C"));
     }
 
+    /**
+     * Client action handler
+     */
     private static class MessageHandler implements DeliverCallback {
+        /**
+         * Parses client action, invokes corresponding model method and publishes generated model level views
+         */
         @Override
         public void handle(String consumerTag, Delivery delivery) throws IOException {
             String jsonString = new String(delivery.getBody(), StandardCharsets.UTF_8);

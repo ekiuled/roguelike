@@ -3,6 +3,9 @@ package roguelike;
 import roguelike.ui.UI;
 import roguelike.util.ServerConnection;
 
+/**
+ * Main client class
+ */
 public class Client {
 
     public static void main(String[] args) throws Exception {

@@ -9,6 +9,9 @@ import roguelike.util.ViewMessage;
 
 import java.util.*;
 
+/**
+ * Class for generating and storing level views that will be sent to clients
+ */
 public class View {
     private static final Queue<ViewMessage> queue = new ArrayDeque<>();
 

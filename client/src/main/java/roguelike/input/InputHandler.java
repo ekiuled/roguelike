@@ -7,6 +7,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+/**
+ * User input handler, converts keyboard input into action and sends it to the server
+ */
 public class InputHandler extends KeyAdapter {
     private final ServerConnection serverConnection;
 

@@ -6,6 +6,9 @@ import roguelike.view.View;
 
 import java.util.*;
 
+/**
+ * Main model class for managing levels and entity actions
+ */
 public class Model {
     private final List<Level> levels = new ArrayList<>();
     private final Map<UUID, Integer> entityLevel = new HashMap<>();

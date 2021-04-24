@@ -1,5 +1,8 @@
 package roguelike.model;
 
+/**
+ * Class for player's score and inventory
+ */
 public class Player extends Mob {
     private int score;
     private final String name;

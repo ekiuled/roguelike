@@ -1,5 +1,8 @@
 package roguelike.util;
 
+/**
+ * Action message to be sent from client to server
+ */
 public class ControlMessage {
     public final String username;
     public final Action action;

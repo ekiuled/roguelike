@@ -6,7 +6,7 @@ import roguelike.model.util.Direction;
 import roguelike.util.Position;
 
 /**
- * class for level map
+ * Class for level map
  */
 public class LevelMap {
     private final int width;

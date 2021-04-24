@@ -11,12 +11,12 @@ import java.util.UUID;
 
 
 /**
- * class that contains all the necessary information for each individual level
+ * Class that contains all the necessary information for each individual level
  * Includes:
- * table of monsters
- * table of players
- * table of items
- * level map
+ * - table of monsters
+ * - table of players
+ * - table of items
+ * - level map
  */
 public class Level {
     private final int SCALE = 1000;
@@ -25,7 +25,6 @@ public class Level {
     private LevelMap map;
     private final Map<UUID, Mob> mobs = new HashMap<>();
     private final Map<Position, ItemEntity> items = new HashMap<>();
-    ;
 
     public Level(int num) {
         number = num;

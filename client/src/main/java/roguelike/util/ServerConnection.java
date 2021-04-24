@@ -10,6 +10,9 @@ import roguelike.ui.UI;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Class for managing interaction with the server
+ */
 public class ServerConnection {
     private final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
     private final static String VIEW_QUEUE_NAME = "roguelike.view";
@@ -17,6 +20,9 @@ public class ServerConnection {
     private final Channel viewChannel;
     private final String username;
 
+    /**
+     * Declares messaging queues and sends a register message to the server
+     */
     public ServerConnection(String username) throws Exception {
         this.username = username;
 
@@ -45,6 +51,9 @@ public class ServerConnection {
         sendAction(Action.REG);
     }
 
+    /**
+     * Sends a serialized action to the server
+     */
     public void sendMessage(String message) throws IOException {
         controllerChannel.basicPublish(
                 "",
@@ -53,10 +62,16 @@ public class ServerConnection {
                 message.getBytes());
     }
 
+    /**
+     * Sends an action and username to the server
+     */
     public void sendAction(Action action) throws IOException {
         sendMessage(new Gson().toJson(new ControlMessage(username, action)));
     }
 
+    /**
+     * Setups UI subscription to the server's view messages
+     */
     public void setViewListener(UI ui) throws IOException {
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String jsonString = new String(delivery.getBody(), StandardCharsets.UTF_8);
