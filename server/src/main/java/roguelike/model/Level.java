@@ -1,5 +1,6 @@
 package roguelike.model;
 
+import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
 import roguelike.model.util.TypeOfMovement;
 import roguelike.util.Action;
@@ -104,6 +105,9 @@ public class Level {
                 removePlayer(id);
                 type = TypeOfMovement.EXIT;
             }
+        }
+        if (type == TypeOfMovement.DONE && map.getCell(currentPlayer.getPosition()).getKind().equals(CellKind.END)) {
+            type = TypeOfMovement.NEXT_LEVEL;
         }
         return type;
     }

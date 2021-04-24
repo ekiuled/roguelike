@@ -35,14 +35,14 @@ public class Mob extends Entity {
     private boolean tryMove(char dir, int newCoord) {
         if (dir == 'y') {
             Cell cell = map.getCell(getPosition().getX(), newCoord);
-            if (cell != null && cell.getKind().equals(CellKind.GROUND)) {
+            if (cell != null && !cell.getKind().equals(CellKind.WALL)) {
                 getPosition().setY(newCoord);
                 return true;
             }
         }
         if (dir == 'x') {
             Cell cell = map.getCell(newCoord, getPosition().getY());
-            if (cell != null && cell.getKind().equals(CellKind.GROUND)) {
+            if (cell != null && !cell.getKind().equals(CellKind.WALL)) {
                 getPosition().setX(newCoord);
                 return true;
             }

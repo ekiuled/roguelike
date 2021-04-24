@@ -47,7 +47,8 @@ public class LevelMap {
     }
 
     private boolean canMove(char coord, int newCoord) {
-        return coord == 'y' && newCoord < height - 1 && newCoord > 1 || coord == 'x' && newCoord < width - 1 && newCoord > 1;
+        return coord == 'y' && newCoord < height - 1 && newCoord > 1 ||
+                coord == 'x' && newCoord < width - 1 && newCoord > 1;
     }
 
     /**
@@ -102,5 +103,9 @@ public class LevelMap {
             return cells[i][j];
         }
         return null;
+    }
+
+    public Cell getCell(Position position) {
+        return getCell(position.getX(), position.getY());
     }
 }
