@@ -29,17 +29,17 @@ public class ServerConnection {
         controllerChannel = connection.createChannel();
         controllerChannel.queueDeclare(
                 CONTROLLER_QUEUE_NAME,
+                true,
                 false,
-                false,
-                false,
+                true,
                 null);
 
         viewChannel = connection.createChannel();
         viewChannel.queueDeclare(
                 VIEW_QUEUE_NAME,
+                true,
                 false,
-                false,
-                false,
+                true,
                 null);
 
         sendAction(Action.REG);
