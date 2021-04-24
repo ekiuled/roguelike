@@ -7,17 +7,26 @@ import roguelike.util.Position;
 import roguelike.util.ServerConnection;
 
 import javax.swing.*;
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Class for managing the game window
  */
 public class UI extends JFrame {
     private final AsciiPanel terminal;
-    private final int width = 80;
+    private final int width = 180;
     private final int height = 60;
+
+    private final Map<Character, Color> texturePack = Map.of(
+            '#', Color.ORANGE,
+            '^', Color.RED,
+            '_', Color.GREEN,
+            '@', Color.CYAN
+    );
 
     /**
      * Setups user input listener, creates the drawing terminal
@@ -65,10 +74,11 @@ public class UI extends JFrame {
         int yMax = Math.min(height, map[0].length - y0);
 
         for (int x = 0; x < xMax; x++)
-            for (int y = 0; y < yMax; y++)
-                terminal.write(map[x0 + x][y0 + y], x, y);
+            for (int y = 0; y < yMax; y++) {
+                Character pixel = map[x0 + x][y0 + y];
+                terminal.write(pixel, x, y, texturePack.getOrDefault(pixel, Color.WHITE));
+            }
 
         terminal.repaint();
     }
-
 }
