@@ -39,6 +39,10 @@ public class UI extends JFrame {
         serverConnection.setViewListener(this);
     }
 
+    public static void init(ServerConnection serverConnection) throws IOException {
+        new UI(serverConnection);
+    }
+
     public void repaint(Character[][] map, Position center) {
         terminal.clear();
 

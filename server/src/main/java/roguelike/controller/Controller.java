@@ -19,13 +19,13 @@ import java.util.UUID;
 public class Controller {
     private final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
     private final static String VIEW_QUEUE_NAME = "roguelike.view";
-    private final Channel viewChannel;
+    private static Channel viewChannel;
 
-    private final Model model;
-    private final Map<String, UUID> players = new HashMap<>();
+    private static Model model;
+    private static final Map<String, UUID> players = new HashMap<>();
 
-    public Controller(Model model) throws Exception {
-        this.model = model;
+    public static void init(Model model) throws Exception {
+        Controller.model = model;
 
         String host = "localhost";
         ConnectionFactory factory = new ConnectionFactory();
@@ -55,7 +55,7 @@ public class Controller {
         Signal.handle(new Signal("INT"), signal -> System.out.println("Interrupted by Ctrl+C"));
     }
 
-    private class MessageHandler implements DeliverCallback {
+    private static class MessageHandler implements DeliverCallback {
         @Override
         public void handle(String consumerTag, Delivery delivery) throws IOException {
             String jsonString = new String(delivery.getBody(), StandardCharsets.UTF_8);
