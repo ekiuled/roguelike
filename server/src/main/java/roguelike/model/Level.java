@@ -19,7 +19,7 @@ import java.util.UUID;
  * - level map
  */
 public class Level {
-    private final int SCALE = 1000;
+    private final int SCALE = 100;
     private final Map<UUID, Player> players = new HashMap<>();
     private final int number;
     private LevelMap map;

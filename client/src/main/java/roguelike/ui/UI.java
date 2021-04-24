@@ -18,8 +18,8 @@ import java.util.Map;
  */
 public class UI extends JFrame {
     private final AsciiPanel terminal;
-    private final int width = 180;
-    private final int height = 60;
+    private final int width = 100;
+    private final int height = 50;
 
     private final Map<Character, Color> texturePack = Map.of(
             '#', Color.ORANGE,
@@ -67,11 +67,14 @@ public class UI extends JFrame {
     public void repaint(Character[][] map, Position center) {
         terminal.clear();
 
-        int x0 = Math.max(0, center.getX() - width / 2);
-        int y0 = Math.max(0, center.getY() - height / 2);
+        int mapWidth = map.length;
+        int mapHeight = map[0].length;
 
-        int xMax = Math.min(width, map.length - x0);
-        int yMax = Math.min(height, map[0].length - y0);
+        int x0 = Math.min(mapWidth - width, Math.max(0, center.getX() - width / 2));
+        int y0 = Math.min(mapHeight - height, Math.max(0, center.getY() - height / 2));
+
+        int xMax = Math.min(width, mapWidth - x0);
+        int yMax = Math.min(height, mapHeight - y0);
 
         for (int x = 0; x < xMax; x++)
             for (int y = 0; y < yMax; y++) {
