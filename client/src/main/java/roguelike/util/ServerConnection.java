@@ -76,7 +76,10 @@ public class ServerConnection {
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String jsonString = new String(delivery.getBody(), StandardCharsets.UTF_8);
             ViewMessage message = new Gson().fromJson(jsonString, ViewMessage.class);
-            ui.repaint(message.map, message.playersPosition.get(username));
+            Position center = message.playersPosition.get(username);
+            if (center != null) {
+                ui.repaint(message.map, center);
+            }
         };
 
         viewChannel.basicConsume(VIEW_QUEUE_NAME, true, deliverCallback, consumerTag -> {
