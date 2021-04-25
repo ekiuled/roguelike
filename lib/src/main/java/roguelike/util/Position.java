@@ -32,6 +32,7 @@ public class Position {
         this.x = x;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof Position) {

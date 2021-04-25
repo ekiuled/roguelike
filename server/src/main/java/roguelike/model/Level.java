@@ -1,15 +1,11 @@
 package roguelike.model;
 
-import roguelike.model.util.CellKind;
-import roguelike.model.util.Direction;
-import roguelike.model.util.MobType;
-import roguelike.model.util.TypeOfMovement;
+import roguelike.model.util.*;
 import roguelike.util.Action;
 import roguelike.util.Position;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -58,7 +54,6 @@ public class Level {
 
 
     private void generateMobs(int number) {
-        //TODO: generate mobs on map
         int num = 0;
         while (num < number) {
             Position position = Position.generateRandom(map.getWidth(), map.getHeight());
@@ -76,6 +71,20 @@ public class Level {
         return mobs;
     }
 
+    public boolean isWall(Position position) {
+        Cell cell = map.getCell(position);
+        return cell == null || cell.getKind().equals(CellKind.WALL);
+
+    }
+
+    public Mob hasMonster(Position position) {
+        return mobs.values().stream().filter(m -> m.getPosition().equals(position)).findFirst().orElse(null);
+    }
+
+    public Mob hasPlayer(Position position) {
+        return players.values().stream().filter(p -> p.getPosition().equals(position)).findFirst().orElse(null);
+    }
+
     public void addPlayer(Player player) {
 
         players.put(player.getId(), player);
@@ -89,8 +98,8 @@ public class Level {
         mobs.put(monster.getId(), monster);
     }
 
-    public Mob removeMob(Mob monster) {
-        return mobs.remove(monster);
+    public Mob removeMob(UUID monsterId) {
+        return mobs.remove(monsterId);
     }
 
     public void addItem(ItemEntity item) {
@@ -130,39 +139,6 @@ public class Level {
                 if (currentMob.move(Direction.RIGHT)) {
                     type = TypeOfMovement.DONE;
                 }
-            }
-            //надо подумать, как сделать это нормально, не дублировать код
-            case ATTACK -> {
-                Position positionOfMob = currentMob.getPosition();
-                switch (currentMob.getType()) {
-                    case PLAYER -> {
-                        Optional<Map.Entry<UUID, Mob>> nearestMob = mobs.entrySet().stream()
-                                .filter(entry -> entry.getValue().getPosition().equals(positionOfMob))
-                                .findFirst();
-                        if (nearestMob.isPresent()) {
-                            Mob target = nearestMob.get().getValue();
-                            currentMob.attack(target);
-                            if (target.isNotAlive()) {
-                                mobs.remove(target.getId());
-                            }
-                            type = TypeOfMovement.DONE;
-                        }
-                    }
-                    case AGGRESSIVE -> {
-                        Optional<Map.Entry<UUID, Player>> nearestMob = players.entrySet().stream()
-                                .filter(entry -> entry.getValue().getPosition().equals(positionOfMob))
-                                .findFirst();
-                        if (nearestMob.isPresent()) {
-                            Mob target = nearestMob.get().getValue();
-                            currentMob.attack(target);
-                            if (target.isNotAlive()) {
-                                players.remove(target.getId());
-                            }
-                            type = TypeOfMovement.DONE;
-                        }
-                    }
-                }
-
             }
             case EXIT -> {
                 removePlayer(id);

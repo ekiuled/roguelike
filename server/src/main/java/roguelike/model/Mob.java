@@ -1,7 +1,5 @@
 package roguelike.model;
 
-import roguelike.model.util.Cell;
-import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
 import roguelike.model.util.MobType;
 import roguelike.util.Position;
@@ -14,7 +12,7 @@ public class Mob extends Entity {
     private final int INITIAL_HEALTH = 100;
     private final int INITIAL_DAMAGE = 20;
     private int health;
-    private LevelMap map;
+    private Level level;
     private int damage;
 
     public Mob() {
@@ -39,12 +37,41 @@ public class Mob extends Entity {
         this.damage = damage;
     }
 
-    public LevelMap getMap() {
-        return map;
+    public Level getMap() {
+        return level;
     }
 
-    public void setMap(LevelMap map) {
-        this.map = map;
+
+    public boolean tryAttack(Position position) {
+        switch (type) {
+            case AGGRESSIVE -> {
+                Mob target = level.hasPlayer(position);
+                if (target != null) {
+                    target.incomingDamage(damage);
+                    if (target.isNotAlive()) {
+                        level.removePlayer(target.getId());
+                        return false;
+                    }
+                    return true;
+                }
+            }
+            case PLAYER -> {
+                Mob target = level.hasMonster(position);
+                if (target != null) {
+                    target.incomingDamage(damage);
+                    if (target.isNotAlive()) {
+                        level.removeMob(target.getId());
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 
     public void incomingDamage(int damage) {
@@ -58,17 +85,21 @@ public class Mob extends Entity {
 
     private boolean tryMove(char dir, int newCoord) {
         if (dir == 'y') {
-            Cell cell = map.getCell(getPosition().getX(), newCoord);
-            if (cell != null && !cell.getKind().equals(CellKind.WALL)) {
-                getPosition().setY(newCoord);
-                return true;
+            Position position = new Position(getPosition().getX(), newCoord);
+            if (!level.isWall(position)) {
+                if (!tryAttack(position)) {
+                    getPosition().setY(newCoord);
+                    return true;
+                }
             }
         }
         if (dir == 'x') {
-            Cell cell = map.getCell(newCoord, getPosition().getY());
-            if (cell != null && !cell.getKind().equals(CellKind.WALL)) {
-                getPosition().setX(newCoord);
-                return true;
+            Position position = new Position(newCoord, getPosition().getY());
+            if (!level.isWall(position)) {
+                if (!tryAttack(position)) {
+                    getPosition().setX(newCoord);
+                    return true;
+                }
             }
         }
         return false;
@@ -90,10 +121,10 @@ public class Mob extends Entity {
         return health <= 0;
     }
 
-    public void attack(Mob target) {
-        switch (type) {
-            case PLAYER, AGGRESSIVE -> target.incomingDamage(this.damage);
-        }
-    }
+//    public void attack(Mob target) {
+//        switch (type) {
+//            case PLAYER, AGGRESSIVE -> target.incomingDamage(this.damage);
+//        }
+//    }
 
 }

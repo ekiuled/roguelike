@@ -26,10 +26,10 @@ public class Model {
 
     public void addNewPlayer(Player newPlayer, int numberLevel) {
         entityLevel.put(newPlayer.getId(), numberLevel);
-        LevelMap map = getLevel(numberLevel).getMap();
-        newPlayer.setPosition(map.getStartCell());
-        newPlayer.setMap(map);
-        getLevel(numberLevel).addPlayer(newPlayer);
+        Level level = getLevel(numberLevel);
+        newPlayer.setPosition(level.getMap().getStartCell());
+        newPlayer.setLevel(level);
+        level.addPlayer(newPlayer);
         View.addView(getLevel(numberLevel));
     }
 
