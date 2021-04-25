@@ -1,5 +1,6 @@
 package roguelike.model;
 
+import roguelike.mobAI.MobsAI;
 import roguelike.model.util.*;
 import roguelike.util.Action;
 import roguelike.util.Position;
@@ -61,7 +62,7 @@ public class Level {
                 Mob newMob = new Mob();
                 newMob.setPosition(position);
                 newMob.setType(MobType.randomMobType());
-                addPMob(newMob);
+                addMob(newMob);
                 num++;
             }
         }
@@ -86,7 +87,6 @@ public class Level {
     }
 
     public void addPlayer(Player player) {
-
         players.put(player.getId(), player);
     }
 
@@ -94,11 +94,15 @@ public class Level {
         return players.remove(playerId);
     }
 
-    public void addPMob(Mob monster) {
+    public void addMob(Mob monster) {
         mobs.put(monster.getId(), monster);
+        MobsAI.addMob(monster);
+        Model.addEntity(monster, number);
     }
 
     public Mob removeMob(UUID monsterId) {
+        MobsAI.removeMob(monsterId);
+        Model.removeEntity(monsterId);
         return mobs.remove(monsterId);
     }
 

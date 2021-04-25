@@ -24,16 +24,9 @@ public class Controller {
     private final static String VIEW_QUEUE_NAME = "roguelike.view";
     private static Channel viewChannel;
 
-    private static Model model;
     private static final Map<String, UUID> players = new HashMap<>();
 
-    public static Model getModel() {
-        return model;
-    }
-
-    public static void init(Model model) throws Exception {
-        Controller.model = model;
-
+    public static void init() throws Exception {
         String host = "localhost";
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
@@ -76,10 +69,11 @@ public class Controller {
 
             if (message.action == Action.REG) {
                 Player player = new Player(message.username);
-                players.put(consumerTag, player.getId());
-                model.addNewPlayer(player, 0);
-            } else if (players.containsKey(consumerTag)) {
-                model.update(players.get(consumerTag), message.action);
+                players.put(message.username, player.getId());
+                Model.addNewPlayer(player, 0);
+            } else {
+                UUID id = message.id == null ? players.get(message.username) : message.id;
+                Model.update(id, message.action);
             }
             while (!View.isEmpty()) {
                 ViewMessage levelView = View.getLevelView();

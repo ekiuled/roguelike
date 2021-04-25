@@ -10,22 +10,30 @@ import java.util.*;
  * Main model class for managing levels and entity actions
  */
 public class Model {
-    private final List<Level> levels = new ArrayList<>();
-    private final Map<UUID, Integer> entityLevel = new HashMap<>();
+    private static final List<Level> levels = new ArrayList<>();
+    private static final Map<UUID, Integer> entityLevel = new HashMap<>();
 
-    public List<Level> getLevels() {
+    public static List<Level> getLevels() {
         return levels;
     }
 
-    public Level getLevel(int index) {
+    public static Level getLevel(int index) {
         if (levels.size() <= index) {
             levels.add(new Level(index));
         }
         return levels.get(index);
     }
 
-    public void addNewPlayer(Player newPlayer, int numberLevel) {
-        entityLevel.put(newPlayer.getId(), numberLevel);
+    public static void addEntity(Entity entity, int numberLevel) {
+        entityLevel.put(entity.getId(), numberLevel);
+    }
+
+    public static void removeEntity(UUID id) {
+        entityLevel.remove(id);
+    }
+
+    public static void addNewPlayer(Player newPlayer, int numberLevel) {
+        addEntity(newPlayer, numberLevel);
         Level level = getLevel(numberLevel);
         newPlayer.setPosition(level.getMap().getStartCell());
         newPlayer.setLevel(level);
@@ -33,7 +41,7 @@ public class Model {
         View.addView(getLevel(numberLevel));
     }
 
-    public void update(UUID id, Action action) {
+    public static void update(UUID id, Action action) {
         int index = entityLevel.get(id);
         Level currentLevel = levels.get(index);
         TypeOfMovement type = currentLevel.updateLevel(id, action);
