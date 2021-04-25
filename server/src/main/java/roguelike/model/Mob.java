@@ -42,39 +42,17 @@ public class Mob extends Entity {
     }
 
 
-    public boolean tryAttack(Position position) {
-        switch (type) {
-            case AGGRESSIVE -> {
-                Mob target = level.hasPlayer(position);
-                if (target != null) {
-                    target.incomingDamage(damage);
-                    if (target.isNotAlive()) {
-                        level.removePlayer(target.getId());
-                        return true;
-                    }
-                    return false;
-                }
-            }
-            case PLAYER -> {
-                Mob target = level.hasMonster(position);
-                if (target != null) {
-                    target.incomingDamage(damage);
-                    if (target.isNotAlive()) {
-                        level.removeMob(target.getId());
-                        return true;
-                    }
-                    return false;
-                }
-            }
-            case NEUTRAL, COWARDLY -> {
-                Mob target = level.hasPlayer(position);
-                if (target != null) {
-                    return false;
-                }
+    public void attack(Mob target) {
+        target.incomingDamage(damage);
+        if (target.isNotAlive()) {
+            if (target.getType().equals(MobType.PLAYER)) {
+                level.removePlayer(target.getId());
+            } else {
+                level.removeMob(target.getId());
             }
         }
-        return true;
     }
+
 
     public void setLevel(Level level) {
         this.level = level;
@@ -89,10 +67,28 @@ public class Mob extends Entity {
         return health;
     }
 
+    private boolean tryAttack(Position position) {
+        Mob nearestPlayer = level.hasPlayer(position);
+        Mob nearestMonster = level.hasMonster(position);
+        if (nearestPlayer != null) {
+            if (type.equals(MobType.AGGRESSIVE)) {
+                attack(nearestPlayer);
+            }
+            return false;
+        }
+        if (nearestMonster != null) {
+            if (type.equals(MobType.PLAYER)) {
+                attack(nearestMonster);
+            }
+            return false;
+        }
+        return true;
+    }
+
     private boolean tryMove(char dir, int newCoord) {
         if (dir == 'y') {
             Position position = new Position(getPosition().getX(), newCoord);
-            if (!level.isWall(position)) {
+            if (level.isNotWall(position)) {
                 if (tryAttack(position)) {
                     getPosition().setY(newCoord);
                     return true;
@@ -101,9 +97,9 @@ public class Mob extends Entity {
         }
         if (dir == 'x') {
             Position position = new Position(newCoord, getPosition().getY());
-            if (!level.isWall(position)) {
+            if (level.isNotWall(position)) {
                 if (tryAttack(position)) {
-                    getPosition().setX(newCoord);
+                    getPosition().setY(newCoord);
                     return true;
                 }
             }
@@ -127,10 +123,5 @@ public class Mob extends Entity {
         return health <= 0;
     }
 
-//    public void attack(Mob target) {
-//        switch (type) {
-//            case PLAYER, AGGRESSIVE -> target.incomingDamage(this.damage);
-//        }
-//    }
 
 }

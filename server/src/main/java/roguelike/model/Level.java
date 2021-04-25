@@ -62,6 +62,7 @@ public class Level {
                 Mob newMob = new Mob();
                 newMob.setPosition(position);
                 newMob.setType(MobType.randomMobType());
+                newMob.setLevel(this);
                 addMob(newMob);
                 num++;
             }
@@ -72,9 +73,9 @@ public class Level {
         return mobs;
     }
 
-    public boolean isWall(Position position) {
+    public boolean isNotWall(Position position) {
         Cell cell = map.getCell(position);
-        return cell == null || cell.getKind().equals(CellKind.WALL);
+        return cell != null && !cell.getKind().equals(CellKind.WALL);
 
     }
 
