@@ -1,4 +1,4 @@
-package roguelike.util;
+package roguelike.model.util;
 
 public enum MobType {
     PLAYER,

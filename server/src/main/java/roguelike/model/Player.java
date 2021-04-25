@@ -1,6 +1,6 @@
 package roguelike.model;
 
-import roguelike.util.MobType;
+import roguelike.model.util.MobType;
 
 /**
  * Class for player's score and inventory

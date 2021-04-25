@@ -3,7 +3,7 @@ package roguelike.model;
 import roguelike.model.util.Cell;
 import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
-import roguelike.util.MobType;
+import roguelike.model.util.MobType;
 import roguelike.util.Position;
 
 /**

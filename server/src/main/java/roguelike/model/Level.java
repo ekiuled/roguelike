@@ -2,9 +2,9 @@ package roguelike.model;
 
 import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
+import roguelike.model.util.MobType;
 import roguelike.model.util.TypeOfMovement;
 import roguelike.util.Action;
-import roguelike.util.MobType;
 import roguelike.util.Position;
 
 import java.util.HashMap;
@@ -22,7 +22,8 @@ import java.util.UUID;
  * - level map
  */
 public class Level {
-    private final int SCALE = 100;
+    private final int MAP_SCALE = 100;
+    private final int MOB_SCALE = 5;
     private final Map<UUID, Player> players = new HashMap<>();
     private final int number;
     private LevelMap map;
@@ -42,8 +43,8 @@ public class Level {
      * Creates a random level of a certain size by calling the constructor for the map
      */
     private void generateLevel() {
-        map = new LevelMap((number + 1) * SCALE, (number + 1) * SCALE);
-        generateMobs((number + 1) * 5);
+        map = new LevelMap((number + 1) * MAP_SCALE, (number + 1) * MAP_SCALE);
+        generateMobs((number + 1) * MOB_SCALE);
         generateItems(number);
     }
 
@@ -130,7 +131,7 @@ public class Level {
                     type = TypeOfMovement.DONE;
                 }
             }
-            //надо подумать, как сделать это нормально, не дуюлировать код
+            //надо подумать, как сделать это нормально, не дублировать код
             case ATTACK -> {
                 Position positionOfMob = currentMob.getPosition();
                 switch (currentMob.getType()) {
