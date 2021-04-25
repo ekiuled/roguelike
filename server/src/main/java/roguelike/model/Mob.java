@@ -10,7 +10,7 @@ import roguelike.util.Position;
  */
 public class Mob extends Entity {
     private final int INITIAL_HEALTH = 100;
-    private final int INITIAL_DAMAGE = 100;
+    private final int INITIAL_DAMAGE = 20;
     private int health;
     private LevelMap map;
     private int damage;
@@ -82,7 +82,6 @@ public class Mob extends Entity {
 
     public void attack(Mob target) {
         target.incomingDamage(this.damage);
-
     }
 
 }

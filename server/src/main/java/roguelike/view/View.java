@@ -2,6 +2,7 @@ package roguelike.view;
 
 import roguelike.model.Level;
 import roguelike.model.LevelMap;
+import roguelike.model.Mob;
 import roguelike.model.Player;
 import roguelike.model.util.Cell;
 import roguelike.util.Position;
@@ -27,6 +28,7 @@ public class View {
         LevelMap currentMap = newLevel.getMap();
         Cell[][] currentCells = currentMap.getCells();
         Collection<Player> players = newLevel.getPlayers().values();
+        Collection<Mob> mobs = newLevel.getMobs().values();
         int currentWight = currentMap.getWidth();
         int currentHeight = currentMap.getHeight();
         Character[][] currentView = new Character[currentWight][currentHeight];
@@ -47,6 +49,11 @@ public class View {
             map.put(player.getName(), player.getPosition());
             currentView[player.getPosition().getX()][player.getPosition().getY()] = '@';
         }
+        for (var mob : mobs) {
+            map.put(mob.getId().toString(), mob.getPosition());
+            currentView[mob.getPosition().getX()][mob.getPosition().getY()] = '$';
+        }
+
 
         queue.add(new ViewMessage(newLevel.getNumber(), currentView, map));
     }
