@@ -99,7 +99,7 @@ public class Mob extends Entity {
             Position position = new Position(newCoord, getPosition().getY());
             if (level.isNotWall(position)) {
                 if (tryAttack(position)) {
-                    getPosition().setY(newCoord);
+                    getPosition().setX(newCoord);
                     return true;
                 }
             }
