@@ -21,7 +21,6 @@ public class InputHandler extends KeyAdapter {
     public void keyPressed(KeyEvent keyEvent) {
         try {
             switch (keyEvent.getKeyCode()) {
-                case KeyEvent.VK_ENTER -> serverConnection.sendAction(Action.ATTACK);
                 case KeyEvent.VK_W -> serverConnection.sendAction(Action.MOVE_UP);
                 case KeyEvent.VK_S -> serverConnection.sendAction(Action.MOVE_DOWN);
                 case KeyEvent.VK_A -> serverConnection.sendAction(Action.MOVE_LEFT);
