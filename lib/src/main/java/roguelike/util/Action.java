@@ -8,4 +8,6 @@ public enum Action {
     MOVE_DOWN,
     MOVE_LEFT,
     MOVE_RIGHT,
+
+    ATTACK;
 }

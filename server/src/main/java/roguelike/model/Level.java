@@ -8,6 +8,7 @@ import roguelike.util.Position;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -70,6 +71,10 @@ public class Level {
         mobs.put(monster.getId(), monster);
     }
 
+    public Mob removeMob(Mob monster) {
+        return mobs.remove(monster);
+    }
+
     public void addItem(ItemEntity item) {
         items.put(item.getPosition(), item);
     }
@@ -79,34 +84,70 @@ public class Level {
      */
     public TypeOfMovement updateLevel(UUID id, Action action) {
         TypeOfMovement type = TypeOfMovement.NONE;
-        Player currentPlayer = players.get(id);
+        Mob currentMob;
+        if (mobs.get(id) != null) {
+            currentMob = mobs.get(id);
+        } else {
+            currentMob = players.get(id);
+        }
+
         switch (action) {
             case MOVE_UP -> {
-                if (currentPlayer.move(Direction.UP)) {
+                if (currentMob.move(Direction.UP)) {
                     type = TypeOfMovement.DONE;
                 }
             }
             case MOVE_DOWN -> {
-                if (currentPlayer.move(Direction.DOWN)) {
+                if (currentMob.move(Direction.DOWN)) {
                     type = TypeOfMovement.DONE;
                 }
             }
             case MOVE_LEFT -> {
-                if (currentPlayer.move(Direction.LEFT)) {
+                if (currentMob.move(Direction.LEFT)) {
                     type = TypeOfMovement.DONE;
                 }
             }
             case MOVE_RIGHT -> {
-                if (currentPlayer.move(Direction.RIGHT)) {
+                if (currentMob.move(Direction.RIGHT)) {
                     type = TypeOfMovement.DONE;
                 }
+            }
+            case ATTACK -> {
+                if (currentMob instanceof Player) {
+                    Player currentPlayer = (Player) currentMob;
+                    Position positionOfPlayer = currentPlayer.getPosition();
+                    Optional<Map.Entry<UUID, Mob>> nearestMonster = mobs.entrySet().stream()
+                            .filter(entry -> entry.getValue().getPosition().equals(positionOfPlayer))
+                            .findFirst();
+                    if (nearestMonster.isPresent()) {
+                        Mob target = nearestMonster.get().getValue();
+                        currentPlayer.attack(target);
+                        if (!target.isAlive()) {
+                            mobs.remove(target);
+                        }
+                    }
+                } else {
+                    Position positionOfMonster = currentMob.getPosition();
+                    Optional<Map.Entry<UUID, Player>> nearestPlayer = players.entrySet().stream()
+                            .filter(entry -> entry.getValue().getPosition().equals(positionOfMonster))
+                            .findFirst();
+                    if (nearestPlayer.isPresent()) {
+                        Mob target = nearestPlayer.get().getValue();
+                        currentMob.attack(target);
+                        if (!target.isAlive()) {
+                            players.remove(target);
+                        }
+                    }
+                }
+
             }
             case EXIT -> {
                 removePlayer(id);
                 type = TypeOfMovement.EXIT;
             }
         }
-        if (type == TypeOfMovement.DONE && map.getCell(currentPlayer.getPosition()).getKind().equals(CellKind.END)) {
+        if (type == TypeOfMovement.DONE && currentMob instanceof Player
+                && map.getCell(currentMob.getPosition()).getKind().equals(CellKind.END)) {
             type = TypeOfMovement.NEXT_LEVEL;
         }
         return type;
