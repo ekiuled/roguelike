@@ -54,7 +54,7 @@ public class MobsAI {
 
     @SuppressWarnings("InfiniteLoopStatement")
     public static void loop() throws IOException {
-        final int frame_interval_ms = 17;
+        final int frame_interval_ms = 200;
         while (true) {
             long startMs = System.currentTimeMillis();
             for (var mobAI : mobs.values()) {
