@@ -44,17 +44,22 @@ public class View {
             }
         }
 
-        Map<String, Position> map = new HashMap<>();
+        Map<String, Position> playersPosition = new HashMap<>();
         for (var player : players) {
-            map.put(player.getName(), player.getPosition());
+            playersPosition.put(player.getName(), player.getPosition());
             currentView[player.getPosition().getX()][player.getPosition().getY()] = '@';
         }
         for (var mob : mobs) {
-            map.put(mob.getId().toString(), mob.getPosition());
-            currentView[mob.getPosition().getX()][mob.getPosition().getY()] = '$';
+            char character = ' ';
+            switch (mob.getType()) {
+                case AGGRESSIVE -> character = 'a';
+                case NEUTRAL -> character = 'n';
+                case COWARDLY -> character = 'c';
+            }
+            currentView[mob.getPosition().getX()][mob.getPosition().getY()] = character;
         }
 
 
-        queue.add(new ViewMessage(newLevel.getNumber(), currentView, map));
+        queue.add(new ViewMessage(newLevel.getNumber(), currentView, playersPosition));
     }
 }

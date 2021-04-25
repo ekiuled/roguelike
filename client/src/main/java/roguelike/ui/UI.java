@@ -25,7 +25,10 @@ public class UI extends JFrame {
             '#', Color.ORANGE,
             '^', Color.RED,
             '_', Color.GREEN,
-            '@', Color.CYAN
+            '@', Color.CYAN,
+            'a', Color.RED,
+            'n', Color.YELLOW,
+            'c', Color.BLUE
     );
 
     /**
