@@ -18,8 +18,8 @@ import java.util.Map;
  */
 public class UI extends JFrame {
     private final AsciiPanel terminal;
-    private final int width = 100;
-    private final int height = 50;
+    private final int width = 99;
+    private final int height = 49;
 
     private final Map<Character, Color> texturePack = Map.of(
             '#', Color.ORANGE,
@@ -68,8 +68,6 @@ public class UI extends JFrame {
      * @param center player position
      */
     public void repaint(Character[][] map, Position center) {
-        terminal.clear();
-
         int mapWidth = map.length;
         int mapHeight = map[0].length;
 
