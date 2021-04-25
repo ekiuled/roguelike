@@ -42,7 +42,7 @@ public class Level {
      */
     private void generateLevel() {
         map = new LevelMap((number + 1) * SCALE, (number + 1) * SCALE);
-        generateMobs(number);
+        generateMobs((number + 1) * 5);
         generateItems(number);
     }
 
@@ -54,8 +54,23 @@ public class Level {
         //TODO: generate items on map
     }
 
+
     private void generateMobs(int number) {
         //TODO: generate mobs on map
+        int num = 0;
+        while (num < number) {
+            Position position = Position.generateRandom(map.getWidth(), map.getHeight());
+            if (map.getCell(position.getX(), position.getY()).getKind().equals(CellKind.GROUND)) {
+                Mob newMob = new Mob();
+                newMob.setPosition(position);
+                addPMob(newMob);
+                num++;
+            }
+        }
+    }
+
+    public Map<UUID, Mob> getMobs() {
+        return mobs;
     }
 
     public void addPlayer(Player player) {
@@ -123,8 +138,9 @@ public class Level {
                         Mob target = nearestMonster.get().getValue();
                         currentPlayer.attack(target);
                         if (!target.isAlive()) {
-                            mobs.remove(target);
+                            mobs.remove(target.getId());
                         }
+                        type = TypeOfMovement.DONE;
                     }
                 } else {
                     Position positionOfMonster = currentMob.getPosition();
@@ -135,8 +151,9 @@ public class Level {
                         Mob target = nearestPlayer.get().getValue();
                         currentMob.attack(target);
                         if (!target.isAlive()) {
-                            players.remove(target);
+                            players.remove(target.getId());
                         }
+                        type = TypeOfMovement.DONE;
                     }
                 }
 
