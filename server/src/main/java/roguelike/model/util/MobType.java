@@ -7,14 +7,17 @@ public enum MobType {
     NEUTRAL,
     COWARDLY;
 
+    private static final double PROBABILITY_AGGRESSIVE = 0.33;
+    private static final double PROBABILITY_NEUTRAL = 0.33;
+
     public static MobType randomMobType() {
         double randomNum = Math.random();
-        if (randomNum <= 0.5) {
+        if (randomNum <= PROBABILITY_AGGRESSIVE) {
             return AGGRESSIVE;
-        } else if (randomNum > 0.75) {
-            return NEUTRAL;
-        } else {
+        } else if (randomNum > PROBABILITY_AGGRESSIVE + PROBABILITY_NEUTRAL) {
             return COWARDLY;
+        } else {
+            return NEUTRAL;
         }
     }
 }

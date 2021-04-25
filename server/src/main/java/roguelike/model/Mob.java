@@ -50,9 +50,9 @@ public class Mob extends Entity {
                     target.incomingDamage(damage);
                     if (target.isNotAlive()) {
                         level.removePlayer(target.getId());
-                        return false;
+                        return true;
                     }
-                    return true;
+                    return false;
                 }
             }
             case PLAYER -> {
@@ -61,13 +61,19 @@ public class Mob extends Entity {
                     target.incomingDamage(damage);
                     if (target.isNotAlive()) {
                         level.removeMob(target.getId());
-                        return false;
+                        return true;
                     }
-                    return true;
+                    return false;
+                }
+            }
+            case NEUTRAL, COWARDLY -> {
+                Mob target = level.hasPlayer(position);
+                if (target != null) {
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     public void setLevel(Level level) {
@@ -87,7 +93,7 @@ public class Mob extends Entity {
         if (dir == 'y') {
             Position position = new Position(getPosition().getX(), newCoord);
             if (!level.isWall(position)) {
-                if (!tryAttack(position)) {
+                if (tryAttack(position)) {
                     getPosition().setY(newCoord);
                     return true;
                 }
@@ -96,7 +102,7 @@ public class Mob extends Entity {
         if (dir == 'x') {
             Position position = new Position(newCoord, getPosition().getY());
             if (!level.isWall(position)) {
-                if (!tryAttack(position)) {
+                if (tryAttack(position)) {
                     getPosition().setX(newCoord);
                     return true;
                 }
