@@ -16,5 +16,9 @@ public abstract class MobAI {
         return mob.getId();
     }
 
+    public Action getAction() {
+        return mob.getLevel().getPlayers().isEmpty() ? null : generateAction();
+    }
+
     public abstract Action generateAction();
 }

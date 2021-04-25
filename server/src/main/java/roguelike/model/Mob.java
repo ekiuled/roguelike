@@ -37,10 +37,9 @@ public class Mob extends Entity {
         this.damage = damage;
     }
 
-    public Level getMap() {
+    public Level getLevel() {
         return level;
     }
-
 
     public void attack(Mob target) {
         target.incomingDamage(damage);
@@ -52,7 +51,6 @@ public class Mob extends Entity {
             }
         }
     }
-
 
     public void setLevel(Level level) {
         this.level = level;

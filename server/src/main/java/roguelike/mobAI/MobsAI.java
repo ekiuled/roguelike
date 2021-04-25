@@ -58,7 +58,7 @@ public class MobsAI {
         while (true) {
             long startMs = System.currentTimeMillis();
             for (var mobAI : mobs.values()) {
-                Action action = mobAI.generateAction();
+                Action action = mobAI.getAction();
                 if (action != null)
                     sendAction(mobAI.getId(), action);
             }
