@@ -24,18 +24,18 @@ public class AggressiveAI extends MobAI {
         int playerX = position.getX();
         int playerY = position.getY();
         if (mobX != playerX && mobY != playerY) {
-            mobX += (int) (Math.signum((double) (mobX - playerX)));
-            mobY += (int) (Math.signum((double) (mobY - playerY)));
+            mobX -= (int) (Math.signum((double) (mobX - playerX)));
+            mobY -= (int) (Math.signum((double) (mobY - playerY)));
             if (!getMob().getLevel().isNotWall(new Position(mobX, mobY))) {
                 return false;
             }
         } else if (mobX != playerX) {
-            mobX += (int) (Math.signum((double) (mobX - playerX)));
+            mobX -= (int) (Math.signum((double) (mobX - playerX)));
             if (!getMob().getLevel().isNotWall(new Position(mobX, mobY))) {
                 return false;
             }
         } else {
-            mobY += (int) (Math.signum((double) (mobY - playerY)));
+            mobY -= (int) (Math.signum((double) (mobY - playerY)));
             if (!getMob().getLevel().isNotWall(new Position(mobX, mobY))) {
                 return false;
             }
