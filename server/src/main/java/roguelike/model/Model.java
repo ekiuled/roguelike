@@ -13,6 +13,10 @@ public class Model {
     private final List<Level> levels = new ArrayList<>();
     private final Map<UUID, Integer> entityLevel = new HashMap<>();
 
+    public List<Level> getLevels() {
+        return levels;
+    }
+
     public Level getLevel(int index) {
         if (levels.size() <= index) {
             levels.add(new Level(index));

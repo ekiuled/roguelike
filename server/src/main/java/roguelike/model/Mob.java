@@ -3,12 +3,14 @@ package roguelike.model;
 import roguelike.model.util.Cell;
 import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
+import roguelike.util.MobType;
 import roguelike.util.Position;
 
 /**
  * Class for any map entity that can move (mobs / players)
  */
 public class Mob extends Entity {
+    private MobType type = MobType.NEUTRAL;
     private final int INITIAL_HEALTH = 100;
     private final int INITIAL_DAMAGE = 20;
     private int health;
@@ -19,6 +21,14 @@ public class Mob extends Entity {
         super();
         health = INITIAL_HEALTH;
         damage = INITIAL_DAMAGE;
+    }
+
+    public MobType getType() {
+        return type;
+    }
+
+    public void setType(MobType type) {
+        this.type = type;
     }
 
     public int getDamage() {
@@ -76,12 +86,14 @@ public class Mob extends Entity {
         return wasMoved;
     }
 
-    boolean isAlive() {
-        return health > 0;
+    boolean isNotAlive() {
+        return health <= 0;
     }
 
     public void attack(Mob target) {
-        target.incomingDamage(this.damage);
+        switch (type) {
+            case PLAYER, AGGRESSIVE -> target.incomingDamage(this.damage);
+        }
     }
 
 }

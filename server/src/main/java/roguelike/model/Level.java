@@ -4,6 +4,7 @@ import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
 import roguelike.model.util.TypeOfMovement;
 import roguelike.util.Action;
+import roguelike.util.MobType;
 import roguelike.util.Position;
 
 import java.util.HashMap;
@@ -63,6 +64,7 @@ public class Level {
             if (map.getCell(position.getX(), position.getY()).getKind().equals(CellKind.GROUND)) {
                 Mob newMob = new Mob();
                 newMob.setPosition(position);
+                newMob.setType(MobType.randomMobType());
                 addPMob(newMob);
                 num++;
             }
@@ -93,6 +95,7 @@ public class Level {
     public void addItem(ItemEntity item) {
         items.put(item.getPosition(), item);
     }
+
 
     /**
      * Updates the state of the level depending on the type of action
@@ -127,33 +130,35 @@ public class Level {
                     type = TypeOfMovement.DONE;
                 }
             }
+            //надо подумать, как сделать это нормально, не дуюлировать код
             case ATTACK -> {
-                if (currentMob instanceof Player) {
-                    Player currentPlayer = (Player) currentMob;
-                    Position positionOfPlayer = currentPlayer.getPosition();
-                    Optional<Map.Entry<UUID, Mob>> nearestMonster = mobs.entrySet().stream()
-                            .filter(entry -> entry.getValue().getPosition().equals(positionOfPlayer))
-                            .findFirst();
-                    if (nearestMonster.isPresent()) {
-                        Mob target = nearestMonster.get().getValue();
-                        currentPlayer.attack(target);
-                        if (!target.isAlive()) {
-                            mobs.remove(target.getId());
+                Position positionOfMob = currentMob.getPosition();
+                switch (currentMob.getType()) {
+                    case PLAYER -> {
+                        Optional<Map.Entry<UUID, Mob>> nearestMob = mobs.entrySet().stream()
+                                .filter(entry -> entry.getValue().getPosition().equals(positionOfMob))
+                                .findFirst();
+                        if (nearestMob.isPresent()) {
+                            Mob target = nearestMob.get().getValue();
+                            currentMob.attack(target);
+                            if (target.isNotAlive()) {
+                                mobs.remove(target.getId());
+                            }
+                            type = TypeOfMovement.DONE;
                         }
-                        type = TypeOfMovement.DONE;
                     }
-                } else {
-                    Position positionOfMonster = currentMob.getPosition();
-                    Optional<Map.Entry<UUID, Player>> nearestPlayer = players.entrySet().stream()
-                            .filter(entry -> entry.getValue().getPosition().equals(positionOfMonster))
-                            .findFirst();
-                    if (nearestPlayer.isPresent()) {
-                        Mob target = nearestPlayer.get().getValue();
-                        currentMob.attack(target);
-                        if (!target.isAlive()) {
-                            players.remove(target.getId());
+                    case AGGRESSIVE -> {
+                        Optional<Map.Entry<UUID, Player>> nearestMob = players.entrySet().stream()
+                                .filter(entry -> entry.getValue().getPosition().equals(positionOfMob))
+                                .findFirst();
+                        if (nearestMob.isPresent()) {
+                            Mob target = nearestMob.get().getValue();
+                            currentMob.attack(target);
+                            if (target.isNotAlive()) {
+                                players.remove(target.getId());
+                            }
+                            type = TypeOfMovement.DONE;
                         }
-                        type = TypeOfMovement.DONE;
                     }
                 }
 

@@ -27,6 +27,10 @@ public class Controller {
     private static Model model;
     private static final Map<String, UUID> players = new HashMap<>();
 
+    public static Model getModel() {
+        return model;
+    }
+
     public static void init(Model model) throws Exception {
         Controller.model = model;
 

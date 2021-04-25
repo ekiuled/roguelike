@@ -1,5 +1,7 @@
 package roguelike.model;
 
+import roguelike.util.MobType;
+
 /**
  * Class for player's score and inventory
  */
@@ -9,6 +11,7 @@ public class Player extends Mob {
 
     public Player(String name) {
         super();
+        setType(MobType.PLAYER);
         this.name = name;
 
     }
