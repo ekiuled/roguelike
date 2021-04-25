@@ -4,26 +4,22 @@ import roguelike.model.Mob;
 import roguelike.util.Action;
 
 public class NeutralAI extends MobAI {
+    private Action action = Action.MOVE_UP;
+
     public NeutralAI(Mob mob) {
         super(mob);
     }
 
     @Override
     public Action generateAction() {
-        switch ((int) Math.round(Math.random())) {
-            case 0 -> {
-                return Action.MOVE_UP;
-            }
-            case 1 -> {
-                return Action.MOVE_DOWN;
-            }
-            case 2 -> {
-                return Action.MOVE_LEFT;
-            }
-            case 3 -> {
-                return Action.MOVE_RIGHT;
+        if (Math.random() > 0.7) {
+            switch ((int) Math.round(Math.random() * 4)) {
+                case 0 -> action = Action.MOVE_UP;
+                case 1 -> action = Action.MOVE_DOWN;
+                case 2 -> action = Action.MOVE_LEFT;
+                case 3 -> action = Action.MOVE_RIGHT;
             }
         }
-        return null;
+        return action;
     }
 }
