@@ -12,7 +12,7 @@ public class CowardlyAI extends MobAI {
     }
 
     @Override
-    public Action generateAction() {
+    protected Action generateAction() {
         Mob player = getNearestPlayer(RANGE);
         if (player != null) {
             if (seePlayer(player.getPosition())) {
@@ -23,14 +23,14 @@ public class CowardlyAI extends MobAI {
     }
 
     private Action moveAway(Position position) {
-        int mobX = getMob().getPosition().getX();
-        int mobY = getMob().getPosition().getY();
+        int mobX = mob.getPosition().getX();
+        int mobY = mob.getPosition().getY();
         int playerX = position.getX();
         int playerY = position.getY();
-        int distanseX = Math.abs(mobX - playerX);
-        int distanseY = Math.abs(mobY - playerY);
-        if (distanseX < distanseY) {
-            if (distanseX != 0) {
+        int distanceX = Math.abs(mobX - playerX);
+        int distanceY = Math.abs(mobY - playerY);
+        if (distanceX < distanceY) {
+            if (distanceX != 0) {
                 if (mobX - playerX > 0) {
                     return Action.MOVE_RIGHT;
                 } else {
@@ -43,7 +43,7 @@ public class CowardlyAI extends MobAI {
                 return Action.MOVE_UP;
             }
         } else {
-            if (distanseY != 0) {
+            if (distanceY != 0) {
                 if (mobY - playerY > 0) {
                     return Action.MOVE_DOWN;
                 } else {

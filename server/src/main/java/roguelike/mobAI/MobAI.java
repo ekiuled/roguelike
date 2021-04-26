@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class MobAI {
-    private final Mob mob;
+    protected final Mob mob;
 
     public MobAI(Mob mob) {
         this.mob = mob;
@@ -24,33 +24,27 @@ public abstract class MobAI {
         return mob.getLevel().getPlayers().isEmpty() ? null : generateAction();
     }
 
-    public Mob getMob() {
-        return mob;
-    }
-
-    public Mob getNearestPlayer(int range) {
-        Mob mob = getMob();
+    protected Mob getNearestPlayer(int range) {
         Optional<Player> p = mob.getLevel().getPlayers().values().stream()
                 .filter(player -> mob.getPosition().getDistance(player.getPosition()) < range)
                 .min(Comparator.comparingDouble(a -> a.getPosition().getDistance(mob.getPosition())));
         return p.orElse(null);
     }
 
-    public boolean seePlayer(Position position) {
-        int mobX = getMob().getPosition().getX();
-        int mobY = getMob().getPosition().getY();
+    protected boolean seePlayer(Position position) {
+        int mobX = mob.getPosition().getX();
+        int mobY = mob.getPosition().getY();
         int playerX = position.getX();
         int playerY = position.getY();
         while (playerX != mobX || playerY != mobY) {
             mobX -= Math.signum(mobX - playerX);
             mobY -= Math.signum(mobY - playerY);
-            if (!getMob().getLevel().isNotWall(new Position(mobX, mobY))) {
+            if (!mob.getLevel().isNotWall(new Position(mobX, mobY))) {
                 return false;
             }
         }
         return true;
     }
 
-
-    public abstract Action generateAction();
+    protected abstract Action generateAction();
 }

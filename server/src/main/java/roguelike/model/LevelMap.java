@@ -11,7 +11,7 @@ import roguelike.util.Position;
 public class LevelMap {
     private final int width;
     private final int height;
-    private final double SCALE = 0.8;
+    private final double SCALE = 0.42;
     private final Cell[][] cells;
     private Position startCell;
     private Position endCell;
@@ -66,34 +66,25 @@ public class LevelMap {
             Direction dir = Direction.getRandomDirection();
             switch (dir) {
                 case UP -> {
-                    if (canMove('y', currentY + 1)) {
+                    if (canMove('y', currentY + 1))
                         currentY++;
-                        groundCount--;
-                        cells[currentX][currentY].setKind(CellKind.GROUND);
-                    }
                 }
                 case DOWN -> {
-                    if (canMove('y', currentY - 1)) {
+                    if (canMove('y', currentY - 1))
                         currentY--;
-                        groundCount--;
-                        cells[currentX][currentY].setKind(CellKind.GROUND);
-                    }
                 }
                 case LEFT -> {
-                    if (canMove('x', currentX - 1)) {
+                    if (canMove('x', currentX - 1))
                         currentX--;
-                        groundCount--;
-                        cells[currentX][currentY].setKind(CellKind.GROUND);
-                    }
                 }
                 case RIGHT -> {
-                    if (canMove('x', currentX + 1)) {
+                    if (canMove('x', currentX + 1))
                         currentX++;
-                        groundCount--;
-                        cells[currentX][currentY].setKind(CellKind.GROUND);
-                    }
                 }
             }
+            if (!cells[currentX][currentY].getKind().equals(CellKind.GROUND))
+                groundCount--;
+            cells[currentX][currentY].setKind(CellKind.GROUND);
         }
         cells[currentX][currentY].setKind(CellKind.END);
         endCell = new Position(currentX, currentY);
