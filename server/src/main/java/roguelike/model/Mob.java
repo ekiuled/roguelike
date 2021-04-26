@@ -41,15 +41,16 @@ public class Mob extends Entity {
         return level;
     }
 
-    public void attack(Mob target) {
+    public boolean attack(Mob target) {
         target.incomingDamage(damage);
-        if (target.isNotAlive()) {
+        if (target.isDead()) {
             if (target.getType().equals(MobType.PLAYER)) {
                 level.removePlayer(target.getId());
             } else {
                 level.removeMob(target.getId());
             }
         }
+        return target.isDead();
     }
 
     public void setLevel(Level level) {
@@ -68,17 +69,11 @@ public class Mob extends Entity {
     private boolean tryAttack(Position position) {
         Mob nearestPlayer = level.hasPlayer(position);
         Mob nearestMonster = level.hasMonster(position);
-        if (nearestPlayer != null) {
-            if (type.equals(MobType.AGGRESSIVE)) {
-                attack(nearestPlayer);
-            }
-            return false;
+        if (nearestPlayer != null && type.equals(MobType.AGGRESSIVE)) {
+            return attack(nearestPlayer);
         }
-        if (nearestMonster != null) {
-            if (type.equals(MobType.PLAYER)) {
-                attack(nearestMonster);
-            }
-            return false;
+        if (nearestMonster != null && type.equals(MobType.PLAYER)) {
+            return attack(nearestMonster);
         }
         return true;
     }
@@ -117,9 +112,7 @@ public class Mob extends Entity {
         return wasMoved;
     }
 
-    boolean isNotAlive() {
+    boolean isDead() {
         return health <= 0;
     }
-
-
 }
