@@ -11,6 +11,7 @@ import roguelike.util.Position;
 public class LevelMap {
     private final int width;
     private final int height;
+    private final double SCALE = 0.8;
     private final Cell[][] cells;
     private Position startCell;
     private Position endCell;
@@ -60,7 +61,7 @@ public class LevelMap {
         startCell = new Position(currentX, currentY);
         cells[currentX][currentY].setKind(CellKind.START);
 
-        int groundCount = (int) (0.7 * width * height);
+        int groundCount = (int) (SCALE * width * height);
         while (groundCount > 0) {
             Direction dir = Direction.getRandomDirection();
             switch (dir) {

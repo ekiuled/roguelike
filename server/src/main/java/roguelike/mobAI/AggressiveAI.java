@@ -11,45 +11,12 @@ public class AggressiveAI extends MobAI {
         super(mob);
     }
 
-    private Mob getNearestPlayer() {
-        Mob mob = getMob();
-        return mob.getLevel().getPlayers().values().stream()
-                .filter(player -> mob.getPosition().getDistanse(player.getPosition()) < RANGE)
-                .findFirst().orElse(null);
-    }
-
-    private boolean isHunt(Position position) {
-        int mobX = getMob().getPosition().getX();
-        int mobY = getMob().getPosition().getY();
-        int playerX = position.getX();
-        int playerY = position.getY();
-        if (mobX != playerX && mobY != playerY) {
-            mobX -= (int) (Math.signum((double) (mobX - playerX)));
-            mobY -= (int) (Math.signum((double) (mobY - playerY)));
-            if (!getMob().getLevel().isNotWall(new Position(mobX, mobY))) {
-                return false;
-            }
-        } else if (mobX != playerX) {
-            mobX -= (int) (Math.signum((double) (mobX - playerX)));
-            if (!getMob().getLevel().isNotWall(new Position(mobX, mobY))) {
-                return false;
-            }
-        } else {
-            mobY -= (int) (Math.signum((double) (mobY - playerY)));
-            if (!getMob().getLevel().isNotWall(new Position(mobX, mobY))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     @Override
     public Action generateAction() {
-        Mob player = getNearestPlayer();
+        Mob player = getNearestPlayer(RANGE);
         if (player != null) {
-            if (isHunt(player.getPosition())) {
+            if (seePlayer(player.getPosition())) {
                 return moveToPlayer(player.getPosition());
-
             }
         }
         return Action.NOTHING;
