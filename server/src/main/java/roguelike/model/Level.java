@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public class Level {
     private final int MAP_SCALE = 100;
-    private final int MOB_SCALE = 5;
+    private final int MOB_SCALE = 10;
     private final Map<UUID, Player> players = new HashMap<>();
     private final int number;
     private LevelMap map;
@@ -92,6 +92,7 @@ public class Level {
     }
 
     public Player removePlayer(UUID playerId) {
+        Model.removeEntity(playerId);
         return players.remove(playerId);
     }
 

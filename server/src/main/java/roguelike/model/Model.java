@@ -42,7 +42,8 @@ public class Model {
     }
 
     public static void update(UUID id, Action action) {
-        int index = entityLevel.get(id);
+        Integer index = entityLevel.get(id);
+        if (index == null) return;
         Level currentLevel = levels.get(index);
         TypeOfMovement type = currentLevel.updateLevel(id, action);
         switch (type) {
