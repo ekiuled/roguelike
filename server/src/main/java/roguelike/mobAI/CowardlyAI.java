@@ -31,26 +31,26 @@ public class CowardlyAI extends MobAI {
         int distanseY = Math.abs(mobY - playerY);
         if (distanseX < distanseY) {
             if (distanseX != 0) {
-                if ((int) (Math.signum((double) (mobX - playerX))) > 0) {
+                if (mobX - playerX > 0) {
                     return Action.MOVE_RIGHT;
                 } else {
                     return Action.MOVE_LEFT;
                 }
             }
-            if (((int) (Math.signum((double) (mobY - playerY))) > 0)) {
+            if (mobY - playerY > 0) {
                 return Action.MOVE_DOWN;
             } else {
                 return Action.MOVE_UP;
             }
         } else {
             if (distanseY != 0) {
-                if (((int) (Math.signum((double) (mobY - playerY))) > 0)) {
+                if (mobY - playerY > 0) {
                     return Action.MOVE_DOWN;
                 } else {
                     return Action.MOVE_UP;
                 }
             }
-            if ((int) (Math.signum((double) (mobX - playerX))) > 0) {
+            if (mobX - playerX > 0) {
                 return Action.MOVE_RIGHT;
             } else {
                 return Action.MOVE_LEFT;

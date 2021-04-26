@@ -31,8 +31,8 @@ public abstract class MobAI {
     public Mob getNearestPlayer(int range) {
         Mob mob = getMob();
         Optional<Player> p = mob.getLevel().getPlayers().values().stream()
-                .filter(player -> mob.getPosition().getDistanse(player.getPosition()) < range)
-                .min(Comparator.comparingDouble(a -> a.getPosition().getDistanse(mob.getPosition())));
+                .filter(player -> mob.getPosition().getDistance(player.getPosition()) < range)
+                .min(Comparator.comparingDouble(a -> a.getPosition().getDistance(mob.getPosition())));
         return p.orElse(null);
     }
 
@@ -42,8 +42,8 @@ public abstract class MobAI {
         int playerX = position.getX();
         int playerY = position.getY();
         while (playerX != mobX || playerY != mobY) {
-            mobX -= (int) (Math.signum((double) (mobX - playerX)));
-            mobY -= (int) (Math.signum((double) (mobY - playerY)));
+            mobX -= Math.signum(mobX - playerX);
+            mobY -= Math.signum(mobY - playerY);
             if (!getMob().getLevel().isNotWall(new Position(mobX, mobY))) {
                 return false;
             }

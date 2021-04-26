@@ -31,26 +31,26 @@ public class AggressiveAI extends MobAI {
         int distanseY = Math.abs(mobY - playerY);
         if (distanseX < distanseY) {
             if (distanseX != 0) {
-                if ((int) (Math.signum((double) (mobX - playerX))) > 0) {
+                if (mobX - playerX > 0) {
                     return Action.MOVE_LEFT;
                 } else {
                     return Action.MOVE_RIGHT;
                 }
             }
-            if (((int) (Math.signum((double) (mobY - playerY))) > 0)) {
+            if (mobY - playerY > 0) {
                 return Action.MOVE_UP;
             } else {
                 return Action.MOVE_DOWN;
             }
         } else {
             if (distanseY != 0) {
-                if (((int) (Math.signum((double) (mobY - playerY))) > 0)) {
+                if (mobY - playerY > 0) {
                     return Action.MOVE_UP;
                 } else {
                     return Action.MOVE_DOWN;
                 }
             }
-            if ((int) (Math.signum((double) (mobX - playerX))) > 0) {
+            if (mobX - playerX > 0) {
                 return Action.MOVE_LEFT;
             } else {
                 return Action.MOVE_RIGHT;

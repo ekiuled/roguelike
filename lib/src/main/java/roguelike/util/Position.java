@@ -15,7 +15,7 @@ public class Position {
         return new Position(x, y);
     }
 
-    public double getDistanse(Position other) {
+    public double getDistance(Position other) {
         return Math.sqrt(Math.pow((x - other.x), 2) + Math.pow((y - other.y), 2));
     }
 
