@@ -4,6 +4,9 @@ import roguelike.model.Mob;
 import roguelike.util.Action;
 import roguelike.util.Position;
 
+/**
+ * Tries to get away from players in sight
+ */
 public class CowardlyAI extends MobAI {
     private final int RANGE = 15;
 
@@ -22,6 +25,9 @@ public class CowardlyAI extends MobAI {
         return Action.NOTHING;
     }
 
+    /**
+     * Calculates where to move to get away from the given position
+     */
     private Action moveAway(Position position) {
         int mobX = mob.getPosition().getX();
         int mobY = mob.getPosition().getY();

@@ -3,6 +3,9 @@ package roguelike.mobAI;
 import roguelike.model.Mob;
 import roguelike.util.Action;
 
+/**
+ * Wanders randomly around the map
+ */
 public class NeutralAI extends MobAI {
     private Action action = Action.MOVE_UP;
 

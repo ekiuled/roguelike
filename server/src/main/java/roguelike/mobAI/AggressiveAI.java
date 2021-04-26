@@ -4,6 +4,9 @@ import roguelike.model.Mob;
 import roguelike.util.Action;
 import roguelike.util.Position;
 
+/**
+ * Tries to attack the nearest player in sight
+ */
 public class AggressiveAI extends MobAI {
     private final int RANGE = 10;
 
@@ -22,6 +25,9 @@ public class AggressiveAI extends MobAI {
         return Action.NOTHING;
     }
 
+    /**
+     * Calculates where to move to get closer to the given position
+     */
     private Action moveToPlayer(Position position) {
         int mobX = mob.getPosition().getX();
         int mobY = mob.getPosition().getY();

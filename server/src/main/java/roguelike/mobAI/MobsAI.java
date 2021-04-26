@@ -13,11 +13,17 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Class for controlling behaviour of all mobs in the game
+ */
 public class MobsAI {
     private final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
     private static Channel controllerChannel;
     private static final Map<UUID, MobAI> mobs = new ConcurrentHashMap<>();
 
+    /**
+     * Establishes connection with controller messaging queue
+     */
     public static void init() throws Exception {
         String host = "localhost";
         ConnectionFactory factory = new ConnectionFactory();
@@ -52,6 +58,9 @@ public class MobsAI {
         sendMessage(new Gson().toJson(new ControlMessage(uuid, action)));
     }
 
+    /**
+     * Main loop: iterates over all mobs and triggers their next action
+     */
     @SuppressWarnings("InfiniteLoopStatement")
     public static void loop() throws IOException {
         final int frame_interval_ms = 200;
@@ -81,5 +90,4 @@ public class MobsAI {
     public static void removeMob(UUID id) {
         mobs.remove(id);
     }
-
 }
