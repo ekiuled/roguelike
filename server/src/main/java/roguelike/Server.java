@@ -2,9 +2,6 @@ package roguelike;
 
 import roguelike.controller.Controller;
 import roguelike.mobAI.MobsAI;
-import roguelike.model.Model;
-
-import java.io.IOException;
 
 /**
  * Main server class

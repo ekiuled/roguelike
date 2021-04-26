@@ -45,9 +45,8 @@ public abstract class MobAI {
     }
 
     /**
-     * Determines whether given position is visible for the mob
+     * Determines whether given position is visible for the mob (using Bresenham's line algorithm)
      */
-
     protected boolean seePlayer(Position position) {
         int x0 = mob.getPosition().getX();
         int y0 = mob.getPosition().getY();

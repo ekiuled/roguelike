@@ -9,5 +9,5 @@ public enum Action {
     MOVE_LEFT,
     MOVE_RIGHT,
 
-    NOTHING;
+    NOTHING
 }
