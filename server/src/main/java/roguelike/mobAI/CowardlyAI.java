@@ -8,7 +8,7 @@ import roguelike.util.Position;
  * Tries to get away from players in sight
  */
 public class CowardlyAI extends MobAI {
-    private final int RANGE = 15;
+    private final int RANGE = 20;
 
     public CowardlyAI(Mob mob) {
         super(mob);

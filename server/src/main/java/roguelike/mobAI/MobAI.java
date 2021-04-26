@@ -47,20 +47,7 @@ public abstract class MobAI {
     /**
      * Determines whether given position is visible for the mob
      */
-//    protected boolean seePlayer(Position position) {
-//        int mobX = mob.getPosition().getX();
-//        int mobY = mob.getPosition().getY();
-//        int playerX = position.getX();
-//        int playerY = position.getY();
-//        while (playerX != mobX || playerY != mobY) {
-//            mobX -= Math.signum(mobX - playerX);
-//            mobY -= Math.signum(mobY - playerY);
-//            if (!mob.getLevel().isNotWall(new Position(mobX, mobY))) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
+
     protected boolean seePlayer(Position position) {
         int x0 = mob.getPosition().getX();
         int y0 = mob.getPosition().getY();

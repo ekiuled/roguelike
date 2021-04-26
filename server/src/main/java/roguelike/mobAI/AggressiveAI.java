@@ -8,7 +8,7 @@ import roguelike.util.Position;
  * Tries to attack the nearest player in sight
  */
 public class AggressiveAI extends MobAI {
-    private final int RANGE = 10;
+    private final int RANGE = 20;
 
     public AggressiveAI(Mob mob) {
         super(mob);
