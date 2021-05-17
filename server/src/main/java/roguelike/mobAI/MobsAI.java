@@ -74,7 +74,8 @@ public class MobsAI {
             long durationMs = System.currentTimeMillis() - startMs;
             try {
                 Thread.sleep(Math.max(0, frame_interval_ms - durationMs));
-            } catch (InterruptedException ignored) {
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         }
     }
