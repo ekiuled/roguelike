@@ -5,9 +5,7 @@ import roguelike.model.util.*;
 import roguelike.util.Action;
 import roguelike.util.Position;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -22,6 +20,7 @@ public class Level {
     private final int MAP_SCALE = 100;
     private final int MOB_SCALE = 10;
     private final Map<UUID, Player> players = new HashMap<>();
+    private final Collection<Player> deadPlayers = new HashSet<>();
     private final int number;
     private LevelMap map;
     private final Map<UUID, Mob> mobs = new HashMap<>();
@@ -94,6 +93,18 @@ public class Level {
     public Player removePlayer(UUID playerId) {
         Model.removeEntity(playerId);
         return players.remove(playerId);
+    }
+
+    public void addDeadPlayer(Player player) {
+        deadPlayers.add(player);
+    }
+
+    public Collection<Player> getDeadPlayers() {
+        return deadPlayers;
+    }
+
+    public void clearDeadPlayers() {
+        deadPlayers.clear();
     }
 
     public void addMob(Mob monster) {

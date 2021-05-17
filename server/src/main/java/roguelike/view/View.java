@@ -9,6 +9,7 @@ import roguelike.util.Position;
 import roguelike.util.ViewMessage;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Class for generating and storing level views that will be sent to clients
@@ -42,14 +43,17 @@ public class View {
             }
         }
 
-        Collection<Player> players = newLevel.getPlayers().values();
         Map<String, Position> playersPosition = new HashMap<>();
         Map<String, Integer> playersHealth = new HashMap<>();
-        for (var player : players) {
+        Stream.concat(
+                newLevel.getPlayers().values().stream(),
+                newLevel.getDeadPlayers().stream()
+        ).forEach(player -> {
             playersPosition.put(player.getName(), player.getPosition());
             playersHealth.put(player.getName(), player.getHealth());
             currentView[player.getPosition().getX()][player.getPosition().getY()] = '@';
-        }
+        });
+        newLevel.clearDeadPlayers();
         Collection<Mob> mobs = newLevel.getMobs().values();
         for (var mob : mobs) {
             char character = ' ';

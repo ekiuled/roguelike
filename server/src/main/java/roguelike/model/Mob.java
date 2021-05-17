@@ -45,7 +45,7 @@ public class Mob extends Entity {
         target.incomingDamage(damage);
         if (target.isDead()) {
             if (target.getType().equals(MobType.PLAYER)) {
-                level.removePlayer(target.getId());
+                level.addDeadPlayer(level.removePlayer(target.getId()));
             } else {
                 level.removeMob(target.getId());
             }
