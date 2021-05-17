@@ -77,8 +77,10 @@ public class ServerConnection {
             String jsonString = new String(delivery.getBody(), StandardCharsets.UTF_8);
             ViewMessage message = new Gson().fromJson(jsonString, ViewMessage.class);
             Position center = message.playersPosition.get(username);
+            Integer health = message.playersHealth.get(username);
             if (center != null) {
-                ui.repaint(message.map, center);
+                ui.display(message.map, center, health, message.levelNumber, username);
+//                ui.repaint(message.map, center);
             }
         };
 

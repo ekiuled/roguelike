@@ -44,8 +44,10 @@ public class View {
 
         Collection<Player> players = newLevel.getPlayers().values();
         Map<String, Position> playersPosition = new HashMap<>();
+        Map<String, Integer> playersHealth = new HashMap<>();
         for (var player : players) {
             playersPosition.put(player.getName(), player.getPosition());
+            playersHealth.put(player.getName(), player.getHealth());
             currentView[player.getPosition().getX()][player.getPosition().getY()] = '@';
         }
         Collection<Mob> mobs = newLevel.getMobs().values();
@@ -60,6 +62,6 @@ public class View {
         }
 
 
-        queue.add(new ViewMessage(newLevel.getNumber(), currentView, playersPosition));
+        queue.add(new ViewMessage(newLevel.getNumber(), currentView, playersPosition, playersHealth));
     }
 }
