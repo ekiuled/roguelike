@@ -29,34 +29,30 @@ public class CowardlyAI extends MobAI {
      * Calculates where to move to get away from the given position
      */
     private Action moveAway(Position position) {
-        int mobX = mob.getPosition().getX();
-        int mobY = mob.getPosition().getY();
-        int playerX = position.getX();
-        int playerY = position.getY();
-        int distanceX = Math.abs(mobX - playerX);
-        int distanceY = Math.abs(mobY - playerY);
-        if (distanceX < distanceY) {
-            if (distanceX != 0) {
-                if (mobX - playerX > 0) {
+        MobPlayerInit mobPlayer = new MobPlayerInit(position);
+
+        if (mobPlayer.getDistanceX() < mobPlayer.getDistanceY()) {
+            if (mobPlayer.getDistanceX() != 0) {
+                if (mobPlayer.getMobX() - mobPlayer.getPlayerX() > 0) {
                     return Action.MOVE_RIGHT;
                 } else {
                     return Action.MOVE_LEFT;
                 }
             }
-            if (mobY - playerY > 0) {
+            if (mobPlayer.getMobY() - mobPlayer.getPlayerY() > 0) {
                 return Action.MOVE_DOWN;
             } else {
                 return Action.MOVE_UP;
             }
         } else {
-            if (distanceY != 0) {
-                if (mobY - playerY > 0) {
+            if (mobPlayer.getDistanceY() != 0) {
+                if (mobPlayer.getMobY() - mobPlayer.getPlayerY() > 0) {
                     return Action.MOVE_DOWN;
                 } else {
                     return Action.MOVE_UP;
                 }
             }
-            if (mobX - playerX > 0) {
+            if (mobPlayer.getMobX() - mobPlayer.getPlayerX() > 0) {
                 return Action.MOVE_RIGHT;
             } else {
                 return Action.MOVE_LEFT;

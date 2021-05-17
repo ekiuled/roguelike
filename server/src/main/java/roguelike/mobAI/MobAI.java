@@ -48,33 +48,69 @@ public abstract class MobAI {
      * Determines whether given position is visible for the mob (using Bresenham's line algorithm)
      */
     protected boolean seePlayer(Position position) {
-        int x0 = mob.getPosition().getX();
-        int y0 = mob.getPosition().getY();
-        int x1 = position.getX();
-        int y1 = position.getY();
-        int deltax = Math.abs(x1 - x0);
-        int deltay = Math.abs(y1 - y0);
+        MobPlayerInit mobPlayer = new MobPlayerInit(position);
+
         int error = 0;
-        int deltaerr = deltay + 1;
-        int y = y0;
-        int diry = y1 - y0;
-        if (diry > 0) {
-            diry = 1;
+        int deltaError = mobPlayer.distanceY + 1;
+        int y = mobPlayer.mobY;
+        int dirY = mobPlayer.playerY - mobPlayer.mobY;
+        if (dirY > 0) {
+            dirY = 1;
         }
-        if (diry < 0) {
-            diry = -1;
+        if (dirY < 0) {
+            dirY = -1;
         }
-        for (int x = Math.min(x0, x1); x < Math.max(x0, x1); x++) {
-            error += deltaerr;
-            if (error >= (deltax + 1)) {
-                y += diry;
-                error -= (deltax + 1);
+        for (int x = Math.min(mobPlayer.playerX, mobPlayer.mobX); x < Math.max(mobPlayer.playerX, mobPlayer.mobX); x++) {
+            error += deltaError;
+            if (error >= (mobPlayer.distanceX + 1)) {
+                y += dirY;
+                error -= (mobPlayer.distanceX + 1);
             }
             if (!mob.getLevel().isNotWall(new Position(x, y))) {
                 return false;
             }
         }
         return true;
+    }
+
+    protected class MobPlayerInit {
+        private final int mobX = mob.getPosition().getX();
+        private final int mobY = mob.getPosition().getY();
+        private final int playerX;
+        private final int playerY;
+        private final int distanceX;
+        private final int distanceY;
+
+        public MobPlayerInit(Position position) {
+            playerX = position.getX();
+            playerY = position.getY();
+            distanceX = Math.abs(mobX - playerX);
+            distanceY = Math.abs(mobY - playerY);
+        }
+
+        public int getMobX() {
+            return mobX;
+        }
+
+        public int getMobY() {
+            return mobY;
+        }
+
+        public int getDistanceX() {
+            return distanceX;
+        }
+
+        public int getDistanceY() {
+            return distanceY;
+        }
+
+        public int getPlayerX() {
+            return playerX;
+        }
+
+        public int getPlayerY() {
+            return playerY;
+        }
     }
 
     /**

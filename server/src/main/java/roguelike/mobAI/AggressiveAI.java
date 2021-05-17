@@ -29,34 +29,30 @@ public class AggressiveAI extends MobAI {
      * Calculates where to move to get closer to the given position
      */
     private Action moveToPlayer(Position position) {
-        int mobX = mob.getPosition().getX();
-        int mobY = mob.getPosition().getY();
-        int playerX = position.getX();
-        int playerY = position.getY();
-        int distanceX = Math.abs(mobX - playerX);
-        int distanceY = Math.abs(mobY - playerY);
-        if (distanceX < distanceY) {
-            if (distanceX != 0) {
-                if (mobX - playerX > 0) {
+        MobPlayerInit mobPlayer = new MobPlayerInit(position);
+
+        if (mobPlayer.getDistanceX() < mobPlayer.getDistanceY()) {
+            if (mobPlayer.getDistanceX() != 0) {
+                if (mobPlayer.getMobX() - mobPlayer.getPlayerX() > 0) {
                     return Action.MOVE_LEFT;
                 } else {
                     return Action.MOVE_RIGHT;
                 }
             }
-            if (mobY - playerY > 0) {
+            if (mobPlayer.getMobY() - mobPlayer.getPlayerY() > 0) {
                 return Action.MOVE_UP;
             } else {
                 return Action.MOVE_DOWN;
             }
         } else {
-            if (distanceY != 0) {
-                if (mobY - playerY > 0) {
+            if (mobPlayer.getDistanceY() != 0) {
+                if (mobPlayer.getMobY() - mobPlayer.getPlayerY() > 0) {
                     return Action.MOVE_UP;
                 } else {
                     return Action.MOVE_DOWN;
                 }
             }
-            if (mobX - playerX > 0) {
+            if (mobPlayer.getMobX() - mobPlayer.getPlayerX() > 0) {
                 return Action.MOVE_LEFT;
             } else {
                 return Action.MOVE_RIGHT;

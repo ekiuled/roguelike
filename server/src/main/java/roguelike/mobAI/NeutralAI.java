@@ -8,6 +8,7 @@ import roguelike.util.Action;
  */
 public class NeutralAI extends MobAI {
     private Action action = Action.MOVE_UP;
+    private final double ACTION_PROBABILITY = 0.7;
 
     public NeutralAI(Mob mob) {
         super(mob);
@@ -15,7 +16,7 @@ public class NeutralAI extends MobAI {
 
     @Override
     public Action generateAction() {
-        if (Math.random() > 0.7) {
+        if (Math.random() > ACTION_PROBABILITY) {
             switch ((int) Math.round(Math.random() * 4)) {
                 case 0 -> action = Action.MOVE_UP;
                 case 1 -> action = Action.MOVE_DOWN;
