@@ -27,8 +27,6 @@ public class View {
     public static void addView(Level newLevel) {
         LevelMap currentMap = newLevel.getMap();
         Cell[][] currentCells = currentMap.getCells();
-        Collection<Player> players = newLevel.getPlayers().values();
-        Collection<Mob> mobs = newLevel.getMobs().values();
         int currentWight = currentMap.getWidth();
         int currentHeight = currentMap.getHeight();
         Character[][] currentView = new Character[currentWight][currentHeight];
@@ -44,11 +42,13 @@ public class View {
             }
         }
 
+        Collection<Player> players = newLevel.getPlayers().values();
         Map<String, Position> playersPosition = new HashMap<>();
         for (var player : players) {
             playersPosition.put(player.getName(), player.getPosition());
             currentView[player.getPosition().getX()][player.getPosition().getY()] = '@';
         }
+        Collection<Mob> mobs = newLevel.getMobs().values();
         for (var mob : mobs) {
             char character = ' ';
             switch (mob.getType()) {
