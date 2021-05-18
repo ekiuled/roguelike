@@ -2,6 +2,7 @@ package roguelike.model;
 
 import roguelike.model.util.TypeOfMovement;
 import roguelike.util.Action;
+import roguelike.util.Position;
 import roguelike.view.View;
 
 import java.util.*;
@@ -35,7 +36,7 @@ public class Model {
     public static void addNewPlayer(Player newPlayer, int numberLevel) {
         addEntity(newPlayer, numberLevel);
         Level level = getLevel(numberLevel);
-        newPlayer.setPosition(level.getMap().getStartCell());
+        newPlayer.setPosition(new Position(level.getMap().getStartCell()));
         newPlayer.setLevel(level);
         level.addPlayer(newPlayer);
         View.addView(getLevel(numberLevel));
