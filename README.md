@@ -20,11 +20,14 @@ rabbitmqctl set_permissions -p "roguelike" "roguelike" ".*" ".*" ".*"
 ```
 
 # Использование
-## Singleplayer
+## Одиночная игра
 Игра запускается командой `./gradlew singleplayer:run` в корне проекта. Генерируется лабиринт и игрок (`@`), которым можно управлять с помощью <kbd>WASD</kbd>.
 Чтобы выйти из игры, нажмите на <kbd>Esc</kbd> или закройте окно.
-## Multiplayer
-Сервер запускается командой `./gradlew server:run --args=<IP>`, где `<IP>` — адрес сервера. Клиенты подключаются командой `./gradlew client:run --args='<username> <IP>'`, где `<username>` — имя игрока, `<IP>` — адрес сервера. `<IP>` можно не указывать, тогда будет использоваться `localhost`.
+## Мультиплеер
+* Сервер запускается командой `./gradlew server:run --args='<IP>'`, где `<IP>` — адрес сервера. 
+* Клиенты подключаются командой `./gradlew client:run --args='<username> <IP>'`, где `<username>` — имя игрока, `<IP>` — адрес сервера. 
+  
+`<IP>` можно не указывать, тогда по умолчанию будет использоваться `localhost`.
 
 # Документация
 См. [Design Document.md](https://github.com/ekiuled/roguelike/blob/main/Design%20Document.md).
