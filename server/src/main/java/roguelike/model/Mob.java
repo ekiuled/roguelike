@@ -81,19 +81,43 @@ public class Mob extends Entity {
     private boolean tryMove(char dir, int newCoord) {
         if (dir == 'y') {
             Position position = new Position(getPosition().getX(), newCoord);
-            if (level.isNotWall(position)) {
-                if (tryAttack(position)) {
-                    getPosition().setY(newCoord);
-                    return true;
+            if (this.type.equals(MobType.PLAYER)) {
+                if (level.isNotWall(position) && level.hasPlayer(position) == null) {
+                    if (tryAttack(position)) {
+                        getPosition().setY(newCoord);
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                if (level.isNotWall(position)) {
+                    if (tryAttack(position)) {
+                        getPosition().setY(newCoord);
+                        return true;
+                    }
+                } else {
+                    return false;
                 }
             }
         }
         if (dir == 'x') {
             Position position = new Position(newCoord, getPosition().getY());
-            if (level.isNotWall(position)) {
+            if (this.type.equals(MobType.PLAYER)) {
+                if (level.isNotWall(position) && level.hasPlayer(position) == null) {
+                    if (tryAttack(position)) {
+                        getPosition().setX(newCoord);
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            } else if (level.isNotWall(position)) {
                 if (tryAttack(position)) {
                     getPosition().setX(newCoord);
                     return true;
+                } else {
+                    return false;
                 }
             }
         }

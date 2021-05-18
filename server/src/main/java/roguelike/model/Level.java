@@ -75,7 +75,6 @@ public class Level {
     public boolean isNotWall(Position position) {
         Cell cell = map.getCell(position);
         return cell != null && !cell.getKind().equals(CellKind.WALL);
-
     }
 
     public Mob hasMonster(Position position) {
