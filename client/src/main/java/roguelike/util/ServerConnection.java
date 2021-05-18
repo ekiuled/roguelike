@@ -3,7 +3,6 @@ package roguelike.util;
 import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 import roguelike.ui.UI;
 
@@ -14,8 +13,6 @@ import java.nio.charset.StandardCharsets;
  * Class for managing interaction with the server
  */
 public class ServerConnection {
-    private final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
-    private final static String VIEW_QUEUE_NAME = "roguelike.view";
     private final Channel controllerChannel;
     private final Channel viewChannel;
     private final String username;
@@ -23,18 +20,14 @@ public class ServerConnection {
     /**
      * Declares messaging queues and sends a register message to the server
      */
-    public ServerConnection(String username) throws Exception {
+    public ServerConnection(String username, String host) throws Exception {
         this.username = username;
 
-        String host = "localhost";
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(host);
-
-        Connection connection = factory.newConnection();
+        Connection connection = new QueueConnectionFactory(host).newConnection();
 
         controllerChannel = connection.createChannel();
         controllerChannel.queueDeclare(
-                CONTROLLER_QUEUE_NAME,
+                QueueConnectionFactory.CONTROLLER_QUEUE_NAME,
                 true,
                 false,
                 true,
@@ -42,7 +35,7 @@ public class ServerConnection {
 
         viewChannel = connection.createChannel();
         viewChannel.queueDeclare(
-                VIEW_QUEUE_NAME,
+                QueueConnectionFactory.VIEW_QUEUE_NAME,
                 true,
                 false,
                 true,
@@ -57,7 +50,7 @@ public class ServerConnection {
     public void sendMessage(String message) throws IOException {
         controllerChannel.basicPublish(
                 "",
-                CONTROLLER_QUEUE_NAME,
+                QueueConnectionFactory.CONTROLLER_QUEUE_NAME,
                 null,
                 message.getBytes());
     }
@@ -80,11 +73,10 @@ public class ServerConnection {
             Integer health = message.playersHealth.get(username);
             if (center != null) {
                 ui.display(message.map, center, health, message.levelNumber, username);
-//                ui.repaint(message.map, center);
             }
         };
 
-        viewChannel.basicConsume(VIEW_QUEUE_NAME, true, deliverCallback, consumerTag -> {
+        viewChannel.basicConsume(QueueConnectionFactory.VIEW_QUEUE_NAME, true, deliverCallback, consumerTag -> {
         });
     }
 }

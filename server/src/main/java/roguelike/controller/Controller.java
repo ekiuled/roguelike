@@ -6,6 +6,7 @@ import roguelike.model.Model;
 import roguelike.model.Player;
 import roguelike.util.Action;
 import roguelike.util.ControlMessage;
+import roguelike.util.QueueConnectionFactory;
 import roguelike.util.ViewMessage;
 import roguelike.view.View;
 import sun.misc.Signal;
@@ -20,22 +21,16 @@ import java.util.UUID;
  * Class for managing interaction with clients
  */
 public class Controller {
-    private final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
-    private final static String VIEW_QUEUE_NAME = "roguelike.view";
     private static Channel viewChannel;
 
     private static final Map<String, UUID> players = new HashMap<>();
 
-    public static void init() throws Exception {
-        String host = "localhost";
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(host);
-
-        Connection connection = factory.newConnection();
+    public static void init(String host) throws Exception {
+        Connection connection = new QueueConnectionFactory(host).newConnection();
 
         Channel controllerChannel = connection.createChannel();
         controllerChannel.queueDeclare(
-                CONTROLLER_QUEUE_NAME,
+                QueueConnectionFactory.CONTROLLER_QUEUE_NAME,
                 true,
                 false,
                 true,
@@ -43,14 +38,18 @@ public class Controller {
 
         viewChannel = connection.createChannel();
         viewChannel.queueDeclare(
-                VIEW_QUEUE_NAME,
+                QueueConnectionFactory.VIEW_QUEUE_NAME,
                 true,
                 false,
                 true,
                 null);
 
-        controllerChannel.basicConsume(CONTROLLER_QUEUE_NAME, true, new MessageHandler(), consumerTag -> {
-        });
+        controllerChannel.basicConsume(
+                QueueConnectionFactory.CONTROLLER_QUEUE_NAME,
+                true,
+                new MessageHandler(),
+                consumerTag -> {
+                });
 
         Signal.handle(new Signal("INT"), signal -> System.out.println("Interrupted by Ctrl+C"));
     }
@@ -79,7 +78,7 @@ public class Controller {
                 ViewMessage levelView = View.getLevelView();
                 viewChannel.basicPublish(
                         "",
-                        VIEW_QUEUE_NAME,
+                        QueueConnectionFactory.VIEW_QUEUE_NAME,
                         null,
                         new Gson().toJson(levelView).getBytes());
             }
