@@ -1,26 +1,60 @@
 package roguelike.model;
 
-import roguelike.model.util.Cell;
-import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
+import roguelike.model.util.MobType;
 import roguelike.util.Position;
 
 /**
  * Class for any map entity that can move (mobs / players)
  */
 public class Mob extends Entity {
+    private MobType type = MobType.NEUTRAL;
     private final int INITIAL_HEALTH = 100;
+    private final int INITIAL_DAMAGE = 20;
     private int health;
-    private LevelMap map;
-
+    private Level level;
+    private int damage;
 
     public Mob() {
         super();
         health = INITIAL_HEALTH;
+        damage = INITIAL_DAMAGE;
     }
 
-    public void setMap(LevelMap map) {
-        this.map = map;
+    public MobType getType() {
+        return type;
+    }
+
+    public void setType(MobType type) {
+        this.type = type;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public boolean attack(Mob target) {
+        target.incomingDamage(damage);
+        if (target.isDead()) {
+            if (target.getType().equals(MobType.PLAYER)) {
+                level.addDeadPlayer(level.removePlayer(target.getId()));
+            } else {
+                level.removeMob(target.getId());
+            }
+        }
+        return target.isDead();
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 
     public void incomingDamage(int damage) {
@@ -32,19 +66,35 @@ public class Mob extends Entity {
         return health;
     }
 
+    private boolean tryAttack(Position position) {
+        Mob nearestPlayer = level.hasPlayer(position);
+        Mob nearestMonster = level.hasMonster(position);
+        if (nearestPlayer != null && type.equals(MobType.AGGRESSIVE)) {
+            return attack(nearestPlayer);
+        }
+        if (nearestMonster != null && type.equals(MobType.PLAYER)) {
+            return attack(nearestMonster);
+        }
+        return true;
+    }
+
     private boolean tryMove(char dir, int newCoord) {
         if (dir == 'y') {
-            Cell cell = map.getCell(getPosition().getX(), newCoord);
-            if (cell != null && !cell.getKind().equals(CellKind.WALL)) {
-                getPosition().setY(newCoord);
-                return true;
+            Position position = new Position(getPosition().getX(), newCoord);
+            if (level.isNotWall(position)) {
+                if (tryAttack(position)) {
+                    getPosition().setY(newCoord);
+                    return true;
+                }
             }
         }
         if (dir == 'x') {
-            Cell cell = map.getCell(newCoord, getPosition().getY());
-            if (cell != null && !cell.getKind().equals(CellKind.WALL)) {
-                getPosition().setX(newCoord);
-                return true;
+            Position position = new Position(newCoord, getPosition().getY());
+            if (level.isNotWall(position)) {
+                if (tryAttack(position)) {
+                    getPosition().setX(newCoord);
+                    return true;
+                }
             }
         }
         return false;
@@ -62,12 +112,7 @@ public class Mob extends Entity {
         return wasMoved;
     }
 
-    boolean isAlive() {
-        return health > 0;
+    boolean isDead() {
+        return health <= 0;
     }
-
-    public void attack(Mob target) {
-        //TODO
-    }
-
 }

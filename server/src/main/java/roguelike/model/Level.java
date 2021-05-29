@@ -1,14 +1,11 @@
 package roguelike.model;
 
-import roguelike.model.util.CellKind;
-import roguelike.model.util.Direction;
-import roguelike.model.util.TypeOfMovement;
+import roguelike.mobAI.MobsAI;
+import roguelike.model.util.*;
 import roguelike.util.Action;
 import roguelike.util.Position;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -20,8 +17,10 @@ import java.util.UUID;
  * - level map
  */
 public class Level {
-    private final int SCALE = 100;
+    private final int MAP_SCALE = 100;
+    private final int MOB_SCALE = 10;
     private final Map<UUID, Player> players = new HashMap<>();
+    private final Collection<Player> deadPlayers = new HashSet<>();
     private final int number;
     private LevelMap map;
     private final Map<UUID, Mob> mobs = new HashMap<>();
@@ -40,8 +39,8 @@ public class Level {
      * Creates a random level of a certain size by calling the constructor for the map
      */
     private void generateLevel() {
-        map = new LevelMap((number + 1) * SCALE, (number + 1) * SCALE);
-        generateMobs(number);
+        map = new LevelMap((number + 1) * MAP_SCALE, (number + 1) * MAP_SCALE);
+        generateMobs((number + 1) * MOB_SCALE);
         generateItems(number);
     }
 
@@ -53,51 +52,108 @@ public class Level {
         //TODO: generate items on map
     }
 
+
     private void generateMobs(int number) {
-        //TODO: generate mobs on map
+        int num = 0;
+        while (num < number) {
+            Position position = Position.generateRandom(map.getWidth(), map.getHeight());
+            if (map.getCell(position.getX(), position.getY()).getKind().equals(CellKind.GROUND)) {
+                Mob newMob = new Mob();
+                newMob.setPosition(position);
+                newMob.setType(MobType.randomMobType());
+                newMob.setLevel(this);
+                addMob(newMob);
+                num++;
+            }
+        }
+    }
+
+    public Map<UUID, Mob> getMobs() {
+        return mobs;
+    }
+
+    public boolean isNotWall(Position position) {
+        Cell cell = map.getCell(position);
+        return cell != null && !cell.getKind().equals(CellKind.WALL);
+
+    }
+
+    public Mob hasMonster(Position position) {
+        return mobs.values().stream().filter(m -> m.getPosition().equals(position)).findFirst().orElse(null);
+    }
+
+    public Mob hasPlayer(Position position) {
+        return players.values().stream().filter(p -> p.getPosition().equals(position)).findFirst().orElse(null);
     }
 
     public void addPlayer(Player player) {
-
         players.put(player.getId(), player);
     }
 
     public Player removePlayer(UUID playerId) {
+        Model.removeEntity(playerId);
         return players.remove(playerId);
     }
 
-    public void addPMob(Mob monster) {
+    public void addDeadPlayer(Player player) {
+        deadPlayers.add(player);
+    }
+
+    public Collection<Player> getDeadPlayers() {
+        return deadPlayers;
+    }
+
+    public void clearDeadPlayers() {
+        deadPlayers.clear();
+    }
+
+    public void addMob(Mob monster) {
         mobs.put(monster.getId(), monster);
+        MobsAI.addMob(monster);
+        Model.addEntity(monster, number);
+    }
+
+    public Mob removeMob(UUID monsterId) {
+        MobsAI.removeMob(monsterId);
+        Model.removeEntity(monsterId);
+        return mobs.remove(monsterId);
     }
 
     public void addItem(ItemEntity item) {
         items.put(item.getPosition(), item);
     }
 
+
     /**
      * Updates the state of the level depending on the type of action
      */
     public TypeOfMovement updateLevel(UUID id, Action action) {
         TypeOfMovement type = TypeOfMovement.NONE;
-        Player currentPlayer = players.get(id);
+        Mob currentMob;
+        if (mobs.get(id) != null) {
+            currentMob = mobs.get(id);
+        } else {
+            currentMob = players.get(id);
+        }
+
         switch (action) {
             case MOVE_UP -> {
-                if (currentPlayer.move(Direction.UP)) {
+                if (currentMob.move(Direction.UP)) {
                     type = TypeOfMovement.DONE;
                 }
             }
             case MOVE_DOWN -> {
-                if (currentPlayer.move(Direction.DOWN)) {
+                if (currentMob.move(Direction.DOWN)) {
                     type = TypeOfMovement.DONE;
                 }
             }
             case MOVE_LEFT -> {
-                if (currentPlayer.move(Direction.LEFT)) {
+                if (currentMob.move(Direction.LEFT)) {
                     type = TypeOfMovement.DONE;
                 }
             }
             case MOVE_RIGHT -> {
-                if (currentPlayer.move(Direction.RIGHT)) {
+                if (currentMob.move(Direction.RIGHT)) {
                     type = TypeOfMovement.DONE;
                 }
             }
@@ -106,7 +162,8 @@ public class Level {
                 type = TypeOfMovement.EXIT;
             }
         }
-        if (type == TypeOfMovement.DONE && map.getCell(currentPlayer.getPosition()).getKind().equals(CellKind.END)) {
+        if (type == TypeOfMovement.DONE && currentMob instanceof Player
+                && map.getCell(currentMob.getPosition()).getKind().equals(CellKind.END)) {
             type = TypeOfMovement.NEXT_LEVEL;
         }
         return type;

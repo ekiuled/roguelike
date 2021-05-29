@@ -2,12 +2,14 @@ package roguelike.view;
 
 import roguelike.model.Level;
 import roguelike.model.LevelMap;
+import roguelike.model.Mob;
 import roguelike.model.Player;
 import roguelike.model.util.Cell;
 import roguelike.util.Position;
 import roguelike.util.ViewMessage;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Class for generating and storing level views that will be sent to clients
@@ -26,7 +28,6 @@ public class View {
     public static void addView(Level newLevel) {
         LevelMap currentMap = newLevel.getMap();
         Cell[][] currentCells = currentMap.getCells();
-        Collection<Player> players = newLevel.getPlayers().values();
         int currentWight = currentMap.getWidth();
         int currentHeight = currentMap.getHeight();
         Character[][] currentView = new Character[currentWight][currentHeight];
@@ -42,12 +43,29 @@ public class View {
             }
         }
 
-        Map<String, Position> map = new HashMap<>();
-        for (var player : players) {
-            map.put(player.getName(), player.getPosition());
+        Map<String, Position> playersPosition = new HashMap<>();
+        Map<String, Integer> playersHealth = new HashMap<>();
+        Stream.concat(
+                newLevel.getPlayers().values().stream(),
+                newLevel.getDeadPlayers().stream()
+        ).forEach(player -> {
+            playersPosition.put(player.getName(), player.getPosition());
+            playersHealth.put(player.getName(), player.getHealth());
             currentView[player.getPosition().getX()][player.getPosition().getY()] = '@';
+        });
+        newLevel.clearDeadPlayers();
+        Collection<Mob> mobs = newLevel.getMobs().values();
+        for (var mob : mobs) {
+            char character = ' ';
+            switch (mob.getType()) {
+                case AGGRESSIVE -> character = 'a';
+                case NEUTRAL -> character = 'n';
+                case COWARDLY -> character = 'c';
+            }
+            currentView[mob.getPosition().getX()][mob.getPosition().getY()] = character;
         }
 
-        queue.add(new ViewMessage(newLevel.getNumber(), currentView, map));
+
+        queue.add(new ViewMessage(newLevel.getNumber(), currentView, playersPosition, playersHealth));
     }
 }

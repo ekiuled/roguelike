@@ -18,24 +18,31 @@ import java.util.Map;
  */
 public class UI extends JFrame {
     private final AsciiPanel terminal;
-    private final int width = 100;
-    private final int height = 50;
+    private final int width = 99;
+    private final int height = 49;
+    private final int statusHeight = 3;
 
     private final Map<Character, Color> texturePack = Map.of(
             '#', Color.ORANGE,
             '^', Color.RED,
             '_', Color.GREEN,
-            '@', Color.CYAN
+            '@', Color.CYAN,
+            'a', Color.RED,
+            'n', Color.YELLOW,
+            'c', Color.BLUE
     );
 
     /**
      * Setups user input listener, creates the drawing terminal
      */
     public UI(ServerConnection serverConnection) throws IOException {
-        add(terminal = new AsciiPanel(width, height));
+        int terminalWidth = width;
+        int terminalHeight = height + statusHeight + 2;
+
+        add(terminal = new AsciiPanel(terminalWidth, terminalHeight));
         addKeyListener(new InputHandler(serverConnection));
 
-        setSize(width * 9, height * 16);
+        setSize(terminalWidth * 9, terminalHeight * 16);
         setVisible(true);
         setResizable(false);
 
@@ -59,14 +66,27 @@ public class UI extends JFrame {
     }
 
     /**
+     * Displays new frame in the terminal
+     *
+     * @param map      the entire level view
+     * @param center   player position
+     * @param health   player health
+     * @param level    level number
+     * @param username username
+     */
+    public void display(Character[][] map, Position center, int health, int level, String username) {
+        repaintMap(map, center);
+        repaintStatusBar(health, level, username);
+        terminal.repaint();
+    }
+
+    /**
      * Draws an area around the center in the terminal
      *
      * @param map    the entire level view
      * @param center player position
      */
-    public void repaint(Character[][] map, Position center) {
-        terminal.clear();
-
+    private void repaintMap(Character[][] map, Position center) {
         int mapWidth = map.length;
         int mapHeight = map[0].length;
 
@@ -81,7 +101,19 @@ public class UI extends JFrame {
                 Character pixel = map[x0 + x][y0 + y];
                 terminal.write(pixel, x, y, texturePack.getOrDefault(pixel, Color.WHITE));
             }
+    }
 
-        terminal.repaint();
+    /**
+     * Draws status bar
+     */
+    private void repaintStatusBar(int health, int level, String username) {
+        Color background = Color.DARK_GRAY;
+        Color textColor = Color.WHITE;
+        Color gameOverColor = Color.RED;
+        terminal.clear(' ', 0, height, width, statusHeight, null, background);
+        String status = String.format("USERNAME: %s    LEVEL: %d    HEALTH: %d    ", username, level, health);
+        terminal.write(status, 1, height + 1, textColor, background);
+        if (health == 0)
+            terminal.write("GAME OVER", status.length() + 2, height + 1, gameOverColor, background);
     }
 }

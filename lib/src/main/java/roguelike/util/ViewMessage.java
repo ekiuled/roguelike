@@ -10,10 +10,12 @@ public class ViewMessage {
     public final int levelNumber;
     public final Character[][] map;
     public final Map<String, Position> playersPosition;
+    public final Map<String, Integer> playersHealth;
 
-    public ViewMessage(int number, Character[][] view, Map<String, Position> positions) {
+    public ViewMessage(int number, Character[][] view, Map<String, Position> positions, Map<String, Integer> health) {
         levelNumber = number;
         map = view;
         playersPosition = positions;
+        playersHealth = health;
     }
 }
