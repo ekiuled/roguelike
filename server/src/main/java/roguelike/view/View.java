@@ -51,8 +51,10 @@ public class View {
         ).forEach(player -> {
             playersPosition.put(player.getName(), player.getPosition());
             playersHealth.put(player.getName(), player.getHealth());
-            currentView[player.getPosition().getX()][player.getPosition().getY()] = '@';
         });
+        newLevel.getPlayers().values().stream()
+                .map(Player::getPosition)
+                .forEach(position -> currentView[position.getX()][position.getY()] = '@');
         newLevel.clearDeadPlayers();
         Collection<Mob> mobs = newLevel.getMobs().values();
         for (var mob : mobs) {

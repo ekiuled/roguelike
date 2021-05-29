@@ -37,12 +37,7 @@ public class Controller {
                 null);
 
         viewChannel = connection.createChannel();
-        viewChannel.queueDeclare(
-                QueueConnectionFactory.VIEW_QUEUE_NAME,
-                true,
-                false,
-                true,
-                null);
+        viewChannel.exchangeDeclare(QueueConnectionFactory.VIEW_EXCHANGE_NAME, "fanout");
 
         controllerChannel.basicConsume(
                 QueueConnectionFactory.CONTROLLER_QUEUE_NAME,
@@ -77,8 +72,8 @@ public class Controller {
             while (!View.isEmpty()) {
                 ViewMessage levelView = View.getLevelView();
                 viewChannel.basicPublish(
+                        QueueConnectionFactory.VIEW_EXCHANGE_NAME,
                         "",
-                        QueueConnectionFactory.VIEW_QUEUE_NAME,
                         null,
                         new Gson().toJson(levelView).getBytes());
             }

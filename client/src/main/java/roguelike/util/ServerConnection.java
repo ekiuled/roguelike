@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 public class ServerConnection {
     private final Channel controllerChannel;
     private final Channel viewChannel;
+    private final String queueName;
     private final String username;
 
     /**
@@ -34,12 +35,9 @@ public class ServerConnection {
                 null);
 
         viewChannel = connection.createChannel();
-        viewChannel.queueDeclare(
-                QueueConnectionFactory.VIEW_QUEUE_NAME,
-                true,
-                false,
-                true,
-                null);
+        viewChannel.exchangeDeclare(QueueConnectionFactory.VIEW_EXCHANGE_NAME, "fanout");
+        queueName = viewChannel.queueDeclare().getQueue();
+        viewChannel.queueBind(queueName, QueueConnectionFactory.VIEW_EXCHANGE_NAME, "");
 
         sendAction(Action.REG);
     }
@@ -76,7 +74,7 @@ public class ServerConnection {
             }
         };
 
-        viewChannel.basicConsume(QueueConnectionFactory.VIEW_QUEUE_NAME, true, deliverCallback, consumerTag -> {
+        viewChannel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
         });
     }
 }

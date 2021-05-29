@@ -12,7 +12,7 @@ import java.util.concurrent.TimeoutException;
 public class QueueConnectionFactory {
     private final static String ROGUELIKE = "roguelike";
     public final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
-    public final static String VIEW_QUEUE_NAME = "roguelike.view";
+    public final static String VIEW_EXCHANGE_NAME = "roguelike.view";
     private final ConnectionFactory factory;
 
     public QueueConnectionFactory(String host) {
