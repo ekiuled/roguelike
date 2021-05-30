@@ -10,6 +10,7 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
         String username = (args.length == 0) ? "anonymous" : args[0];
-        UI.init(new ServerConnection(username));
+        String host = (args.length > 1) ? args[1] : "localhost";
+        UI.init(new ServerConnection(username, host));
     }
 }

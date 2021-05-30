@@ -3,10 +3,10 @@ package roguelike.mobAI;
 import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import roguelike.model.Mob;
 import roguelike.util.Action;
 import roguelike.util.ControlMessage;
+import roguelike.util.QueueConnectionFactory;
 
 import java.io.IOException;
 import java.util.Map;
@@ -17,23 +17,18 @@ import java.util.concurrent.ConcurrentHashMap;
  * Class for controlling behaviour of all mobs in the game
  */
 public class MobsAI {
-    private final static String CONTROLLER_QUEUE_NAME = "roguelike.controller";
     private static Channel controllerChannel;
     private static final Map<UUID, MobAI> mobs = new ConcurrentHashMap<>();
 
     /**
      * Establishes connection with controller messaging queue
      */
-    public static void init() throws Exception {
-        String host = "localhost";
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(host);
-
-        Connection connection = factory.newConnection();
+    public static void init(String host) throws Exception {
+        Connection connection = new QueueConnectionFactory(host).newConnection();
 
         controllerChannel = connection.createChannel();
         controllerChannel.queueDeclare(
-                CONTROLLER_QUEUE_NAME,
+                QueueConnectionFactory.CONTROLLER_QUEUE_NAME,
                 true,
                 false,
                 true,
@@ -46,7 +41,7 @@ public class MobsAI {
     public static void sendMessage(String message) throws IOException {
         controllerChannel.basicPublish(
                 "",
-                CONTROLLER_QUEUE_NAME,
+                QueueConnectionFactory.CONTROLLER_QUEUE_NAME,
                 null,
                 message.getBytes());
     }

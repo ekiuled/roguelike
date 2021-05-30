@@ -9,8 +9,9 @@ import roguelike.mobAI.MobsAI;
 public class Server {
 
     public static void main(String[] args) throws Exception {
-        MobsAI.init();
-        Controller.init();
+        String host = (args.length == 0) ? "localhost" : args[0];
+        MobsAI.init(host);
+        Controller.init(host);
         MobsAI.loop();
     }
 }
