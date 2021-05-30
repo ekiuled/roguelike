@@ -3,6 +3,7 @@ package roguelike.model;
 import roguelike.model.util.Cell;
 import roguelike.model.util.CellKind;
 import roguelike.model.util.Direction;
+import roguelike.model.util.Plane;
 import roguelike.util.Position;
 
 /**
@@ -47,9 +48,9 @@ public class LevelMap {
         return endCell;
     }
 
-    private boolean canMove(char coord, int newCoord) {
-        return coord == 'y' && newCoord < height - 1 && newCoord > 1 ||
-                coord == 'x' && newCoord < width - 1 && newCoord > 1;
+    private boolean canMove(Plane coord, int newCoord) {
+        return coord == Plane.Y && newCoord < height - 1 && newCoord > 1 ||
+                coord == Plane.X && newCoord < width - 1 && newCoord > 1;
     }
 
     /**
@@ -66,19 +67,19 @@ public class LevelMap {
             Direction dir = Direction.getRandomDirection();
             switch (dir) {
                 case UP -> {
-                    if (canMove('y', currentY + 1))
+                    if (canMove(Plane.Y, currentY + 1))
                         currentY++;
                 }
                 case DOWN -> {
-                    if (canMove('y', currentY - 1))
+                    if (canMove(Plane.Y, currentY - 1))
                         currentY--;
                 }
                 case LEFT -> {
-                    if (canMove('x', currentX - 1))
+                    if (canMove(Plane.X, currentX - 1))
                         currentX--;
                 }
                 case RIGHT -> {
-                    if (canMove('x', currentX + 1))
+                    if (canMove(Plane.X, currentX + 1))
                         currentX++;
                 }
             }
