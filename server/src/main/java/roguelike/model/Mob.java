@@ -2,7 +2,9 @@ package roguelike.model;
 
 import roguelike.model.util.Direction;
 import roguelike.model.util.MobType;
+import roguelike.model.util.Plane;
 import roguelike.util.Position;
+
 
 /**
  * Class for any map entity that can move (mobs / players)
@@ -78,60 +80,52 @@ public class Mob extends Entity {
         return true;
     }
 
-    private boolean tryMove(char dir, int newCoord) {
-        if (dir == 'y') {
-            Position position = new Position(getPosition().getX(), newCoord);
-            if (this.type.equals(MobType.PLAYER)) {
-                if (level.isNotWall(position) && level.hasPlayer(position) == null) {
-                    if (tryAttack(position)) {
-                        getPosition().setY(newCoord);
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
+    private boolean tryChangePosition(Position position, Plane dir, int newCoord) {
+        if (tryAttack(position)) {
+            if (dir == Plane.Y) {
+                getPosition().setY(newCoord);
             } else {
-                if (level.isNotWall(position)) {
-                    if (tryAttack(position)) {
-                        getPosition().setY(newCoord);
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
+                getPosition().setX(newCoord);
             }
-        }
-        if (dir == 'x') {
-            Position position = new Position(newCoord, getPosition().getY());
-            if (this.type.equals(MobType.PLAYER)) {
-                if (level.isNotWall(position) && level.hasPlayer(position) == null) {
-                    if (tryAttack(position)) {
-                        getPosition().setX(newCoord);
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-            } else if (level.isNotWall(position)) {
-                if (tryAttack(position)) {
-                    getPosition().setX(newCoord);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+            return true;
         }
         return false;
+    }
+
+    private boolean changePosition(Plane dir, Position position, int newCoord) {
+        if (this.type.equals(MobType.PLAYER)) {
+            if (level.isNotWall(position) && level.hasPlayer(position) == null) {
+                return tryChangePosition(position, dir, newCoord);
+            } else {
+                return false;
+            }
+        } else {
+            if (level.isNotWall(position)) {
+                return tryChangePosition(position, dir, newCoord);
+            } else {
+                return false;
+            }
+        }
+    }
+
+    private boolean tryMove(Plane dir, int newCoord) {
+        if (dir == Plane.Y) {
+            Position position = new Position(getPosition().getX(), newCoord);
+            return changePosition(Plane.Y, position, newCoord);
+        } else {
+            Position position = new Position(newCoord, getPosition().getY());
+            return changePosition(Plane.X, position, newCoord);
+        }
     }
 
     public boolean move(Direction direction) {
         boolean wasMoved = false;
         Position currPosition = this.getPosition();
         switch (direction) {
-            case UP -> wasMoved = tryMove('y', currPosition.getY() - 1);
-            case DOWN -> wasMoved = tryMove('y', currPosition.getY() + 1);
-            case LEFT -> wasMoved = tryMove('x', currPosition.getX() - 1);
-            case RIGHT -> wasMoved = tryMove('x', currPosition.getX() + 1);
+            case UP -> wasMoved = tryMove(Plane.Y, currPosition.getY() - 1);
+            case DOWN -> wasMoved = tryMove(Plane.Y, currPosition.getY() + 1);
+            case LEFT -> wasMoved = tryMove(Plane.X, currPosition.getX() - 1);
+            case RIGHT -> wasMoved = tryMove(Plane.X, currPosition.getX() + 1);
         }
         return wasMoved;
     }
